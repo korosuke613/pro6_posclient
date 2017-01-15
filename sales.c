@@ -92,6 +92,8 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 
     tmp = gtk_entry_get_text(salesHData->productidEntry);
     strncpy(productidStr, tmp, 5);
+    productidStr[5]='\0';
+
     strcpy(purchaseidStr, tmp+5);
 
     /*通信用のソケットディスクリプタが空でないかチェック*/
@@ -265,7 +267,7 @@ G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
     if(!selection)return;
 
     store = GTK_LIST_STORE(gtk_tree_view_get_model(salesHData->productTree));
-    success = gtk_tree_selection_get_selected(selection, NULL, &(salesHData->productIter));
+    success = gtk_tree_selection_get_selected(selection, NULL, &iter);
     if(success)gtk_list_store_remove(store, &iter);
 }
 
