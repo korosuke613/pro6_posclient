@@ -101,6 +101,8 @@
       <column type="gint"/>
       <!-- column-name total -->
       <column type="gint"/>
+      <!-- column-name no -->
+      <column type="gint"/>
     </columns>
   </object>
   <object class="GtkWindow" id="salesWindow">
@@ -342,6 +344,17 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="model">liststore3</property>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="column7">
+                        <property name="title" translatable="yes">No</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext9"/>
+                          <attributes>
+                            <attribute name="text">6</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="column1">
                         <property name="sizing">autosize</property>
