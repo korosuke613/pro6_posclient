@@ -251,7 +251,22 @@ G_MODULE_EXPORT void cb_sales3_exec(GtkButton *button, gpointer data){
         gtk_widget_hide(salesHData->pointcardWindow);
         gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
         g_sales3WindowFlag = 0;
-    }	
+    }
+}
+
+G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
+    //テスト用リスト削除コード
+    GtkListStore *store;
+    GtkTreeSelection *selection;
+    GtkTreeIter iter;
+    gboolean success;
+
+    selection = gtk_tree_view_get_selection(salesHData->productTree);
+    if(!selection)return;
+
+    store = GTK_LIST_STORE(gtk_tree_view_get_model(salesHData->productTree));
+    success = gtk_tree_selection_get_selected(selection, NULL, &(salesHData->productIter));
+    if(success)gtk_list_store_remove(store, &iter);
 }
 
 /**
