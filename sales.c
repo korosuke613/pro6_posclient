@@ -92,6 +92,8 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 
     tmp = gtk_entry_get_text(salesHData->productidEntry);
     strncpy(productidStr, tmp, 5);
+    productidStr[5]='\0';
+
     strcpy(purchaseidStr, tmp+5);
 
     /*通信用のソケットディスクリプタが空でないかチェック*/
@@ -251,9 +253,52 @@ G_MODULE_EXPORT void cb_sales3_exec(GtkButton *button, gpointer data){
         gtk_widget_hide(salesHData->pointcardWindow);
         gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
         g_sales3WindowFlag = 0;
-    }	
+    }
 }
 
+G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
+    char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
+    int sendLen, recvLen, recordCount=0;
+    char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
+    int i;
+    //テスト用リスト削除コード
+    GtkListStore *store;
+    GtkTreeSelection *selection;
+    GtkTreeIter iter;
+    gboolean success;
+    GtkTreeModel *model;
+    int listNum;
+
+    selection = gtk_tree_view_get_selection(salesHData->productTree);
+    if(!selection)return;
+
+    store = GTK_LIST_STORE(gtk_tree_view_get_model(salesHData->productTree));
+    success = gtk_tree_selection_get_selected(selection, NULL, &iter);
+    if(success)gtk_list_store_remove(store, &iter);
+    /*
+    model = GTK_TREE_MODEL(gtk_tree_view_get_model(salesHData->productTree));
+    gtk_tree_model_get(model, &iter, 0, &listNum, -1);
+      */
+
+    if(g_soc>0){
+        sendLen = sprintf(sendBuf, "%s %s %s %s","CORRECT", "1", "0",ENTER);
+        send(g_soc, sendBuf, sendLen, 0);
+        recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
+        recordCount=record_division(recvBuf, records);
+        memset(response,0,BUFSIZE);
+        for(i=0;i<9;i++){
+            memset(param[i],0,BUFSIZE);
+        }
+        /* レスポンスメッセージを解析 */
+        sscanf(records[0], "%s %s %s %s %s %s %s", response, param[0], param[1], param[2], param[3], param[4], param[5]);
+
+        if(strcmp(response, OK_STAT) != 0){
+            /* エラーメッセージを表示 */
+            showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
+            return;
+        }
+    }
+}
 /**
  * ログインエラーメッセージ表示
  * showErrorMsg 
