@@ -138,7 +138,8 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
                 2, productName, 
                 3, productPrice, 
                 4, 1, 
-                5, productPrice, 
+                5, productPrice,
+                6, atoi(param[1]),
                 -1
                 );
 
@@ -267,35 +268,36 @@ G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
     GtkTreeIter iter;
     gboolean success;
     GtkTreeModel *model;
-    int listNum;
+    gint selectNum;
+    gchar *productName;
 
     selection = gtk_tree_view_get_selection(salesHData->productTree);
     if(!selection)return;
 
     store = GTK_LIST_STORE(gtk_tree_view_get_model(salesHData->productTree));
-    success = gtk_tree_selection_get_selected(selection, NULL, &iter);
-    if(success)gtk_list_store_remove(store, &iter);
-    /*
     model = GTK_TREE_MODEL(gtk_tree_view_get_model(salesHData->productTree));
-    gtk_tree_model_get(model, &iter, 0, &listNum, -1);
-      */
+    success = gtk_tree_selection_get_selected(selection, NULL, &iter);
+    if(success){
+        gtk_tree_model_get(GTK_TREE_MODEL(store), &iter, 6, &selectNum, -1);
+        gtk_list_store_remove(store, &iter);
 
-    if(g_soc>0){
-        sendLen = sprintf(sendBuf, "%s %s %s %s","CORRECT", "1", "0",ENTER);
-        send(g_soc, sendBuf, sendLen, 0);
-        recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-        recordCount=record_division(recvBuf, records);
-        memset(response,0,BUFSIZE);
-        for(i=0;i<9;i++){
-            memset(param[i],0,BUFSIZE);
-        }
-        /* レスポンスメッセージを解析 */
-        sscanf(records[0], "%s %s %s %s %s %s %s", response, param[0], param[1], param[2], param[3], param[4], param[5]);
+        if(g_soc>0){
+            sendLen = sprintf(sendBuf, "%s %d %s %s","CORRECT", selectNum, "0",ENTER);
+            send(g_soc, sendBuf, sendLen, 0);
+            recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
+            recordCount=record_division(recvBuf, records);
+            memset(response,0,BUFSIZE);
+            for(i=0;i<9;i++){
+                memset(param[i],0,BUFSIZE);
+            }
+            /* レスポンスメッセージを解析 */
+            sscanf(records[0], "%s %s %s %s %s %s %s", response, param[0], param[1], param[2], param[3], param[4], param[5]);
 
-        if(strcmp(response, OK_STAT) != 0){
-            /* エラーメッセージを表示 */
-            showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
-            return;
+            if(strcmp(response, OK_STAT) != 0){
+                /* エラーメッセージを表示 */
+                showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
+                return;
+            }
         }
     }
 }
