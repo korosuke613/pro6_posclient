@@ -24,9 +24,9 @@ void showSalesErrorMsg(GtkLabel *erroLabel, int errorCode);
 G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
     GtkBuilder			*builder;
     int i;
-	gint value = 1, min = 0, max = 100;
-	gint step = 1;
-	GtkWidget *tmpSpinbutton;
+    gint value = 1, min = 0, max = 100;
+    gint step = 1;
+    GtkWidget *tmpSpinbutton;
 
     /* 残高照会画面が表示されていない場合 */
     if(g_sales1WindowFlag == 0){ 
@@ -60,13 +60,13 @@ G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
         salesHData->maleRadiobutton = GTK_RADIO_BUTTON(gtk_builder_get_object(builder, "maleRadiobutton"));
         salesHData->femaleRadiobutton = GTK_RADIO_BUTTON(gtk_builder_get_object(builder, "femaleRadiobutton"));
 
-		salesHData->valueSpinbutton = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "valueSpinbutton"));
-		
-//		salesHData->valueSpinbutton = GTK_SPIN_BUTTON(tmpSpinbutton);
-//		adjustment = gtk_adjustment_new(50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
-//		gtk_spin_button_configure(salesHData->valueSpinbutton, adjustment, 1.0, 2);
-				
-		for(i=0;i<6;i++){
+        salesHData->valueSpinbutton = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "valueSpinbutton"));
+
+        //		salesHData->valueSpinbutton = GTK_SPIN_BUTTON(tmpSpinbutton);
+        //		adjustment = gtk_adjustment_new(50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
+        //		gtk_spin_button_configure(salesHData->valueSpinbutton, adjustment, 1.0, 2);
+
+        for(i=0;i<6;i++){
             gtk_list_store_append(salesHData->ageModel,&(salesHData->ageIter));
             gtk_list_store_set(salesHData->ageModel, &(salesHData->ageIter), 0, ageData[i], -1);
         }
@@ -306,9 +306,14 @@ G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
                 showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
                 return;
             }
-        }
+       }
     }
 }
+
+G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
+    printf("OK\n");
+}
+
 /**
  * ログインエラーメッセージ表示
  * showErrorMsg 
