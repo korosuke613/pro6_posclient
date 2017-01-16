@@ -11,4 +11,3 @@ GUI アプリケーションプログラミング](http://wiki.cis.iwate-u.ac.jp
 ### GTK（GTK+ではない）  
 [GTK Tutorial](http://lmj.nagaokaut.ac.jp/~lu/programming/gtk_tut_ja/gtk_tut_ja.html)  
 [GTK -gladeの使い方-(NAIST)](https://robotics.naist.jp/edu/text/?Robotics%2FGTK)  
-[ウィジェットのパッキング（パッキングボックスの概念など参考に）](http://www.swlab.it.okayama-u.ac.jp/man/gtk_tut_ja/gtk_tut_ja-4.html)
