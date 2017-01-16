@@ -309,7 +309,7 @@
                     <property name="model">liststore3</property>
                     <child>
                       <object class="GtkTreeViewColumn" id="column7">
-                        <property name="title">No</property>
+                          <property name="title">No</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext9"/>
                           <attributes>
@@ -492,11 +492,12 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="button1">
+                          <object class="GtkButton" id="correctButton">
                             <property name="label" translatable="yes">&#x4FEE;&#x6B63;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="cb_sales1_tree_correct"/> 
                           </object>
                           <packing>
                             <property name="expand">False</property>
