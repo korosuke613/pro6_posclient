@@ -1,31 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkDialog" id="breakDialog">
-    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
-    <signal name="delete-event" handler="cb_sales2_win_cancel" swapped="no"/>
+    <signal name="delete_event" handler="cb_sales2_win_cancel"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="label7">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&#x73FE;&#x5728;&#x306E;&#x5165;&#x529B;&#x3092;&#x7834;&#x68C4;&#x3057;&#x3066;&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x304B;&#xFF1F;</property>
+          </object>
+          <packing>
+            <property name="padding">10</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="layout_style">spread</property>
             <child>
               <object class="GtkButton" id="cancelButton3">
-                <property name="label" translatable="yes">いいえ</property>
+                <property name="label" translatable="yes">&#x3044;&#x3044;&#x3048;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="cb_sales2_win_cancel" swapped="no"/>
+                <signal name="clicked" handler="cb_sales2_win_cancel"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -35,11 +42,11 @@
             </child>
             <child>
               <object class="GtkButton" id="okButton3">
-                <property name="label" translatable="yes">はい</property>
+                <property name="label" translatable="yes">&#x306F;&#x3044;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="cb_sales1_win_cancel" swapped="no"/>
+                <signal name="clicked" handler="cb_sales1_win_cancel"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -50,22 +57,8 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label7">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">現在の入力を破棄して販売会計を終了しますか？</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="padding">10</property>
-            <property name="position">1</property>
           </packing>
         </child>
       </object>
@@ -106,42 +99,34 @@
     </columns>
   </object>
   <object class="GtkWindow" id="salesWindow">
-    <property name="can_focus">False</property>
     <property name="window_position">center</property>
-    <signal name="destroy" handler="cb_sales2_win_open" swapped="no"/>
-    <signal name="delete-event" handler="cb_sales2_win_open" swapped="no"/>
+    <signal name="destroy" handler="cb_sales2_win_open"/>
+    <signal name="delete_event" handler="cb_sales2_win_open"/>
     <child>
       <object class="GtkHBox" id="hbox1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <child>
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
               <object class="GtkImage" id="productImage">
                 <property name="height_request">150</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="pixbuf">kyorotyan08_1.jpg</property>
                 <property name="icon-size">1</property>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkHButtonBox" id="hbuttonbox3">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="layout_style">edge</property>
                 <child>
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">天気</property>
+                    <property name="label" translatable="yes">&#x5929;&#x6C17;</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -153,7 +138,6 @@
                   <object class="GtkComboBox" id="weatherComboBox">
                     <property name="width_request">80</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="model">liststore2</property>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext2"/>
@@ -170,22 +154,18 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkHButtonBox" id="hbuttonbox6">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
                 <property name="layout_style">edge</property>
                 <child>
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">年齢</property>
+                    <property name="label" translatable="yes">&#x5E74;&#x9F62;</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -197,7 +177,6 @@
                   <object class="GtkComboBox" id="ageComboBox">
                     <property name="width_request">80</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="model">liststore1</property>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext1"/>
@@ -214,24 +193,19 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
             </child>
             <child>
               <object class="GtkHBox" id="hbox3">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkHButtonBox" id="hbuttonbox2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">性別</property>
+                        <property name="label" translatable="yes">&#x6027;&#x5225;</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -241,18 +215,15 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkHButtonBox" id="hbuttonbox9">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkRadioButton" id="maleRadiobutton">
-                        <property name="label" translatable="yes">男性</property>
+                        <property name="label" translatable="yes">&#x7537;&#x6027;</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -267,7 +238,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="femaleRadiobutton">
-                        <property name="label" translatable="yes">女性</property>
+                        <property name="label" translatable="yes">&#x5973;&#x6027;</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -283,30 +254,25 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
             </child>
             <child>
               <object class="GtkHButtonBox" id="hbuttonbox4">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="border_width">4</property>
                 <child>
                   <object class="GtkButton" id="pointcardButton">
-                    <property name="label" translatable="yes">ポイントカード番号の入力</property>
+                    <property name="label" translatable="yes">&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x30AB;&#x30FC;&#x30C9;&#x756A;&#x53F7;&#x306E;&#x5165;&#x529B;</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="cb_sales3_win_open" swapped="no"/>
+                    <signal name="clicked" handler="cb_sales3_win_open"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -317,14 +283,12 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">4</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -332,7 +296,6 @@
           <object class="GtkVBox" id="vbox2">
             <property name="width_request">460</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow1">
                 <property name="height_request">200</property>
@@ -346,7 +309,7 @@
                     <property name="model">liststore3</property>
                     <child>
                       <object class="GtkTreeViewColumn" id="column7">
-                        <property name="title" translatable="yes">No</property>
+                        <property name="title">No</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext9"/>
                           <attributes>
@@ -358,7 +321,7 @@
                     <child>
                       <object class="GtkTreeViewColumn" id="column1">
                         <property name="sizing">autosize</property>
-                        <property name="title">商品ID</property>
+                        <property name="title">&#x5546;&#x54C1;ID</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext3"/>
                           <attributes>
@@ -370,7 +333,7 @@
                     <child>
                       <object class="GtkTreeViewColumn" id="column2">
                         <property name="sizing">autosize</property>
-                        <property name="title">仕入れID</property>
+                        <property name="title">&#x4ED5;&#x5165;&#x308C;ID</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext4"/>
                           <attributes>
@@ -382,7 +345,7 @@
                     <child>
                       <object class="GtkTreeViewColumn" id="column3">
                         <property name="sizing">autosize</property>
-                        <property name="title">商品名</property>
+                        <property name="title">&#x5546;&#x54C1;&#x540D;</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext5"/>
                           <attributes>
@@ -394,7 +357,7 @@
                     <child>
                       <object class="GtkTreeViewColumn" id="column4">
                         <property name="sizing">autosize</property>
-                        <property name="title">単価</property>
+                        <property name="title">&#x5358;&#x4FA1;</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext6"/>
                           <attributes>
@@ -406,7 +369,7 @@
                     <child>
                       <object class="GtkTreeViewColumn" id="column5">
                         <property name="sizing">autosize</property>
-                        <property name="title">個数</property>
+                        <property name="title">&#x500B;&#x6570;</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext7"/>
                           <attributes>
@@ -418,7 +381,7 @@
                     <child>
                       <object class="GtkTreeViewColumn" id="column6">
                         <property name="sizing">autosize</property>
-                        <property name="title">合計</property>
+                        <property name="title">&#x5408;&#x8A08;</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext8"/>
                           <attributes>
@@ -431,31 +394,25 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">商品をスキャンしてください</property>
+                <property name="label" translatable="yes">&#x5546;&#x54C1;&#x3092;&#x30B9;&#x30AD;&#x30E3;&#x30F3;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkHBox" id="hbox2">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkVBox" id="vbox5">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkHPaned" id="hpaned5">
                         <property name="visible">True</property>
@@ -465,9 +422,7 @@
                           <object class="GtkEntry" id="productidEntry">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="invisible_char">●</property>
-                            <property name="primary_icon_activatable">False</property>
-                            <property name="secondary_icon_activatable">False</property>
+                            <property name="invisible_char">&#x25CF;</property>
                             <property name="primary_icon_sensitive">True</property>
                             <property name="secondary_icon_sensitive">True</property>
                           </object>
@@ -479,14 +434,13 @@
                         <child>
                           <object class="GtkHButtonBox" id="hbuttonbox10">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkButton" id="sendButton">
-                                <property name="label" translatable="yes">送信</property>
+                                <property name="label" translatable="yes">&#x9001;&#x4FE1;</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="cb_sales1_send" swapped="no"/>
+                                <signal name="clicked" handler="cb_sales1_send"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -502,23 +456,19 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkHButtonBox" id="hbuttonbox5">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="border_width">3</property>
                         <property name="layout_style">end</property>
                         <child>
                           <object class="GtkLabel" id="label5">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
                             <property name="xalign">0.94999998807907104</property>
-                            <property name="label" translatable="yes">個数</property>
+                            <property name="label" translatable="yes">&#x500B;&#x6570;</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -527,14 +477,13 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="spinbutton1">
+                          <object class="GtkSpinButton" id="valueSpinbutton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="invisible_char">●</property>
-                            <property name="primary_icon_activatable">False</property>
-                            <property name="secondary_icon_activatable">False</property>
+                            <property name="invisible_char">&#x25CF;</property>
                             <property name="primary_icon_sensitive">True</property>
                             <property name="secondary_icon_sensitive">True</property>
+                            <property name="adjustment">adjustment1</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -544,7 +493,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button1">
-                            <property name="label" translatable="yes">修正</property>
+                            <property name="label" translatable="yes">&#x4FEE;&#x6B63;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -557,11 +506,11 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="deleteButton">
-                            <property name="label" translatable="yes">削除</property>
+                            <property name="label" translatable="yes">&#x524A;&#x9664;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <signal name="clicked" handler="cb_sales1_tree_delete" swapped="no"/>
+                            <signal name="clicked" handler="cb_sales1_tree_delete"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -572,25 +521,21 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkVButtonBox" id="vbuttonbox1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="layout_style">spread</property>
                     <child>
                       <object class="GtkButton" id="nextButton">
-                        <property name="label" translatable="yes">次へ</property>
+                        <property name="label" translatable="yes">&#x6B21;&#x3078;</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -603,11 +548,11 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="cancelButton1">
-                        <property name="label" translatable="yes">キャンセル</property>
+                        <property name="label" translatable="yes">&#x30AD;&#x30E3;&#x30F3;&#x30BB;&#x30EB;</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="cb_sales2_win_open" swapped="no"/>
+                        <signal name="clicked" handler="cb_sales2_win_open"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -617,22 +562,16 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -640,22 +579,30 @@
     </child>
   </object>
   <object class="GtkDialog" id="nenreiDialog">
-    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="type_hint">normal</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="label8">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">!!&#x5E74;&#x9F62;&#x78BA;&#x8A8D;!!
+&#x3042;&#x306A;&#x305F;&#x306F;20&#x6B73;&#x4EE5;&#x4E0A;&#x3067;&#x3059;&#x304B;&#xFF1F;</property>
+            <property name="justify">center</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="cancelButton4">
-                <property name="label" translatable="yes">いいえ</property>
+                <property name="label" translatable="yes">&#x3044;&#x3044;&#x3048;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -668,7 +615,7 @@
             </child>
             <child>
               <object class="GtkButton" id="okButton4">
-                <property name="label" translatable="yes">はい</property>
+                <property name="label" translatable="yes">&#x306F;&#x3044;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -682,23 +629,8 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label8">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">!!年齢確認!!
-あなたは20歳以上ですか？</property>
-            <property name="justify">center</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
           </packing>
         </child>
       </object>
@@ -709,40 +641,32 @@
     </action-widgets>
   </object>
   <object class="GtkWindow" id="pointcardWindow">
-    <property name="can_focus">False</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
-    <signal name="delete-event" handler="cb_sales3_win_cancel" swapped="no"/>
+    <signal name="delete_event" handler="cb_sales3_win_cancel"/>
     <child>
       <object class="GtkVBox" id="vbox3">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="border_width">3</property>
         <child>
           <object class="GtkLabel" id="label6">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">ポイントカード番号入力</property>
+            <property name="label" translatable="yes">&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x30AB;&#x30FC;&#x30C9;&#x756A;&#x53F7;&#x5165;&#x529B;</property>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox7">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="border_width">3</property>
             <child>
               <object class="GtkEntry" id="pointidEntry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">●</property>
+                <property name="invisible_char">&#x25CF;</property>
                 <property name="width_chars">30</property>
-                <property name="primary_icon_activatable">False</property>
-                <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
               </object>
@@ -754,35 +678,29 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="pointresultLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox8">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="border_width">3</property>
             <property name="layout_style">spread</property>
             <child>
               <object class="GtkButton" id="cancelButton2">
-                <property name="label" translatable="yes">キャンセル</property>
+                <property name="label" translatable="yes">&#x30AD;&#x30E3;&#x30F3;&#x30BB;&#x30EB;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="cb_sales3_win_cancel" swapped="no"/>
+                <signal name="clicked" handler="cb_sales3_win_cancel"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -796,7 +714,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="cb_sales3_exec" swapped="no"/>
+                <signal name="clicked" handler="cb_sales3_exec"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -806,8 +724,6 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">3</property>
           </packing>
         </child>
@@ -815,9 +731,14 @@
     </child>
   </object>
   <object class="GtkWindow" id="window1">
-    <property name="can_focus">False</property>
     <child>
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
   </object>
 </interface>
