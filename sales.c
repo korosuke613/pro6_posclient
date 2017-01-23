@@ -16,6 +16,7 @@
 int g_sales1WindowFlag = 0; //販売会計
 int g_sales2WindowFlag = 0;
 int g_sales3WindowFlag = 0;
+int g_sales4WindowFlag = 0;
 
 _salesHandleData *salesHData;
 
@@ -61,6 +62,9 @@ G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
 		salesHData->femaleRadiobutton = GTK_RADIO_BUTTON(gtk_builder_get_object(builder, "femaleRadiobutton"));
 
 		salesHData->valueSpinbutton = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "valueSpinbutton"));
+
+		
+		salesHData->resultWindow = GTK_WIDGET( gtk_builder_get_object(builder, "resultWindow") );
 
 		//		salesHData->valueSpinbutton = GTK_SPIN_BUTTON(tmpSpinbutton);
 		//		adjustment = gtk_adjustment_new(50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
@@ -390,6 +394,26 @@ G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
 			}
 		}
 	}
+}
+
+G_MODULE_EXPORT void cb_sales4_win_open(GtkButton *button, gpointer data){
+
+	/* 残高照会画面が表示されていない場合 */
+	if(g_sales4WindowFlag == 0){ 
+		gtk_widget_show_all(salesHData->resultWindow);
+		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+		/* 残高照会画面表示フラグをセット */
+		g_sales4WindowFlag = 1;
+	}   
+}
+
+
+G_MODULE_EXPORT void cb_sales4_win_cancel(GtkButton *button, gpointer data){
+
+	/* 残高照会画面（ウィンドウ）を非表示 */
+	gtk_widget_hide(salesHData->resultWindow);
+	gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
+	g_sales4WindowFlag = 0;
 }
 
 /**
