@@ -39,6 +39,7 @@ typedef struct _salesHandleData{
 	GtkWidget  *breakDialog;			//breakDialogウィンドウ
 	GtkWidget  *pointcardWindow;
 	GtkWidget  *resultWindow;
+	GtkWidget  *resultdangerDialog;
 	GtkButton  *cancelButton1;          //戻るボタン
 	GtkButton  *cancelButton3;			//breakDialogのいいえボタン
 	GtkButton  *nextButton;          //次へボタン
