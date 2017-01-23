@@ -878,7 +878,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="cb_sales4_win_cancel"/>
+                <signal name="clicked" handler="cb_sales2_win_open"/>
               </object>
               <packing>
                 <property name="expand">False</property>

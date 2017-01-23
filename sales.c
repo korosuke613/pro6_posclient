@@ -187,18 +187,22 @@ G_MODULE_EXPORT void cb_sales1_win_cancel(GtkButton *button, gpointer data){
 		/* レスポンスメッセージを解析 */
 		sscanf(records[0], "%s", response);
 	}
-
-
 	/* 残高照会画面（ウィンドウ）を非表示 */
 	gtk_widget_hide(salesHData->salesWindow);
 	gtk_widget_hide(salesHData->breakDialog);
 	gtk_widget_hide(salesHData->pointcardWindow);
+	gtk_widget_hide(salesHData->resultWindow);
+	gtk_widget_hide(salesHData->resultdangerDialog);
+
 	/* 残高照会画面主要Widget保持構造体を破棄（メモリ開放) */
 	free(salesHData);
 	/* 残高照会画面表示フラグをクリア */
 	g_sales1WindowFlag = 0;
 	g_sales2WindowFlag = 0;
 	g_sales3WindowFlag = 0;
+	g_sales4WindowFlag = 0;
+	g_sales5WindowFlag = 0;
+
 }
 
 /**
@@ -224,7 +228,7 @@ G_MODULE_EXPORT void cb_sales2_win_cancel(GtkButton *button, gpointer data){
 
 	/* 残高照会画面（ウィンドウ）を非表示 */
 	gtk_widget_hide(salesHData->breakDialog);
-	gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
+	if(g_sales5WindowFlag == 0)gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
 	g_sales2WindowFlag = 0;
 }
 
@@ -409,7 +413,6 @@ G_MODULE_EXPORT void cb_sales4_win_open(GtkButton *button, gpointer data){
 	}   
 }
 
-
 G_MODULE_EXPORT void cb_sales4_win_cancel(GtkButton *button, gpointer data){
 
 	/* 残高照会画面（ウィンドウ）を非表示 */
@@ -417,7 +420,6 @@ G_MODULE_EXPORT void cb_sales4_win_cancel(GtkButton *button, gpointer data){
 	gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
 	g_sales4WindowFlag = 0;
 }
-
 G_MODULE_EXPORT void cb_sales5_win_open(GtkButton *button, gpointer data){
 
 	/* 残高照会画面が表示されていない場合 */
