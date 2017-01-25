@@ -398,7 +398,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label4">
+              <object class="GtkLabel" id="noticeLabel">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&#x5546;&#x54C1;&#x3092;&#x30B9;&#x30AD;&#x30E3;&#x30F3;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;</property>
               </object>

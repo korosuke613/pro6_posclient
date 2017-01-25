@@ -64,6 +64,7 @@ G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
 
         salesHData->valueSpinbutton = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "valueSpinbutton"));
 
+        salesHData->noticeLabel = GTK_LABEL(gtk_builder_get_object(builder, "noticeLabel"));
 
         salesHData->resultWindow = GTK_WIDGET( gtk_builder_get_object(builder, "resultWindow") );
         salesHData->resultdangerDialog = GTK_WIDGET( gtk_builder_get_object(builder, "resultdangerDialog") );
@@ -142,7 +143,7 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
             strcpy(productName, param[2]);
             productPrice = atoi(param[4]);
             if(!strcmp(param[0], "-ERR")){
-                printf("賞味期限切れ\n");
+                showSalesErrorMsg(salesHData->noticeLabel, atoi(param[1]));
                 return;
             }
         }
@@ -453,6 +454,8 @@ void showSalesErrorMsg(GtkLabel *errorLabel, int errorCode){
         case 300:
             gtk_label_set_text(errorLabel, "ERROR:データベースエラー");
             break;
+        case 1200:
+            gtk_label_set_text(errorLabel, "ERROR:賞味期限切れ");
         case 5100:
             gtk_label_set_text(errorLabel, "ERROR:ログインエラー");
             break;
