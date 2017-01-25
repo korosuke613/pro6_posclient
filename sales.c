@@ -21,7 +21,8 @@ int g_sales5WindowFlag = 0;
 
 _salesHandleData *salesHData;
 
-void showSalesErrorMsg(GtkLabel *erroLabel, int errorCode);
+void showSalesErrorMsg(GtkLabel *errorLabel, int errorCode);
+void showSalesOkMsg(GtkLabel *okLabel, int okCode);
 
 G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
     GtkBuilder			*builder;
@@ -146,6 +147,7 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
                 showSalesErrorMsg(salesHData->noticeLabel, atoi(param[1]));
                 return;
             }
+			showSalesOkMsg(salesHData->noticeLabel, 0);
         }
 
 
@@ -284,6 +286,7 @@ G_MODULE_EXPORT void cb_sales3_exec(GtkButton *button, gpointer data){
             showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
             return;
         }
+		showSalesOkMsg(salesHData->noticeLabel, 0);
         salesHData->pointLogin = 1;
         gtk_widget_set_sensitive(GTK_WIDGET(salesHData->pointcardButton), FALSE);
         gtk_widget_set_sensitive(GTK_WIDGET(salesHData->ageComboBox), FALSE);
@@ -339,6 +342,7 @@ G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
                 showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
                 return;
             }
+			showSalesOkMsg(salesHData->noticeLabel, 0);
         }
     }
 }
@@ -399,6 +403,7 @@ G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
                 showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
                 return;
             }
+			showSalesOkMsg(salesHData->noticeLabel, 0);
         }
     }
 }
@@ -449,14 +454,15 @@ void showSalesErrorMsg(GtkLabel *errorLabel, int errorCode){
 
     switch(errorCode){
         case 200:
-            gtk_label_set_text(errorLabel, "ERROR:コマンドリクエストの引数エラー");
+            gtk_label_set_text(errorLabel, "ERROR:在庫不足");
             break;
         case 300:
             gtk_label_set_text(errorLabel, "ERROR:データベースエラー");
             break;
         case 1200:
             gtk_label_set_text(errorLabel, "ERROR:賞味期限切れ");
-        case 5100:
+			break;
+		case 5100:
             gtk_label_set_text(errorLabel, "ERROR:ログインエラー");
             break;
 
@@ -466,3 +472,10 @@ void showSalesErrorMsg(GtkLabel *errorLabel, int errorCode){
     }   
 }
 
+void showSalesOkMsg(GtkLabel *okLabel, int okCode){
+	switch(okCode){
+		default:
+			gtk_label_set_text(okLabel, "商品をスキャンしてください");
+			break;
+	}
+}
