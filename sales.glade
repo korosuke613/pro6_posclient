@@ -7,6 +7,8 @@
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
+    <property name="deletable">False</property>
+    <signal name="destroy" handler="cb_sales2_win_cancel"/>
     <signal name="delete_event" handler="cb_sales2_win_cancel"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
@@ -100,6 +102,7 @@
   </object>
   <object class="GtkWindow" id="salesWindow">
     <property name="window_position">center</property>
+    <property name="deletable">False</property>
     <signal name="destroy" handler="cb_sales2_win_open"/>
     <signal name="delete_event" handler="cb_sales2_win_open"/>
     <child>
