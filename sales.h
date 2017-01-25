@@ -57,6 +57,7 @@ typedef struct _salesHandleData{
 	GtkLabel *pointresultLabel;
 	GtkButton *pointcardButton;
 	GtkSpinButton *valueSpinbutton;
+  GtkLabel *noticeLabel;
 
 	GtkRadioButton *maleRadiobutton;
 	GtkRadioButton *femaleRadiobutton;	
