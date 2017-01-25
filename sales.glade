@@ -812,7 +812,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entry2">
+              <object class="GtkEntry" id="moneyEntry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
@@ -840,7 +840,7 @@
           <object class="GtkHBox" id="hbox4">
             <property name="visible">True</property>
             <child>
-              <object class="GtkLabel" id="label12">
+              <object class="GtkLabel" id="havepointLabel">
                 <property name="width_request">160</property>
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&#x5229;&#x7528;&#x30DD;&#x30A4;&#x30F3;&#x30C8;(&#x6700;&#x5927;0)</property>
@@ -850,7 +850,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entry1">
+              <object class="GtkEntry" id="usepointEntry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
@@ -875,12 +875,20 @@
           </packing>
         </child>
         <child>
+          <object class="GtkLabel" id="resulterrorLabel">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkHButtonBox" id="hbuttonbox11">
             <property name="visible">True</property>
             <property name="layout_style">spread</property>
             <child>
               <object class="GtkButton" id="cancelButton5">
-                <property name="label" translatable="yes">&#x623B;&#x308B;</property>
+                <property name="label" translatable="yes">&#x4F1A;&#x8A08;&#x53D6;&#x308A;&#x6D88;&#x3057;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -898,6 +906,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="cb_sales6_win_open"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -907,7 +916,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">4</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </object>
@@ -986,6 +995,85 @@
     <action-widgets>
       <action-widget response="0">cancelButton6</action-widget>
       <action-widget response="0">okButton6</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkDialog" id="endDialog">
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">&#x7CBE;&#x7B97;&#x5B8C;&#x4E86;!</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">normal</property>
+    <property name="deletable">False</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox4">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="oturiLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&#x304A;&#x3064;&#x308A;</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="usepointLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&#x4F7F;&#x7528;&#x30DD;&#x30A4;&#x30F3;&#x30C8;</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="getpointLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&#x4ECA;&#x56DE;&#x4ED8;&#x4E0E;&#x30DD;&#x30A4;&#x30F3;&#x30C8;</property>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="finalhavepointLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&#x73FE;&#x5728;&#x4FDD;&#x6709;&#x30DD;&#x30A4;&#x30F3;&#x30C8;</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area4">
+            <property name="visible">True</property>
+            <property name="layout_style">center</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label" translatable="yes">&#x7D42;&#x4E86;</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="cb_sales1_win_cancel"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">button1</action-widget>
     </action-widgets>
   </object>
 </interface>

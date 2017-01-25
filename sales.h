@@ -33,6 +33,7 @@ const gchar *weatherData[]={"晴れ", "雨", "曇り","雪"};
 //*** 販売会計画面のWidget with ログイン画面のWidget ***//
 typedef struct _salesHandleData{
 	char *customerId;
+	int useAblePoint;
 	int pointLogin;
 	
 	GtkWidget  *salesWindow;           //販売会計ウィンドウ１
@@ -40,6 +41,7 @@ typedef struct _salesHandleData{
 	GtkWidget  *pointcardWindow;
 	GtkWidget  *resultWindow;
 	GtkWidget  *resultdangerDialog;
+	GtkWidget  *endDialog;
 	GtkButton  *cancelButton1;          //戻るボタン
 	GtkButton  *cancelButton3;			//breakDialogのいいえボタン
 	GtkButton  *nextButton;          //次へボタン
@@ -57,7 +59,15 @@ typedef struct _salesHandleData{
 	GtkLabel *pointresultLabel;
 	GtkButton *pointcardButton;
 	GtkSpinButton *valueSpinbutton;
-  GtkLabel *noticeLabel;
+	GtkLabel *noticeLabel;
+	GtkLabel *totalmoneyLabel;
+	GtkLabel *havepointLabel;
+	GtkLabel *getpointLabel;
+	GtkLabel *oturiLabel;
+	GtkLabel *usepointLabel;
+	GtkLabel *finalhavepointLabel;
+	GtkEntry *moneyEntry;
+	GtkEntry *usepointEntry;
 
 	GtkRadioButton *maleRadiobutton;
 	GtkRadioButton *femaleRadiobutton;	
