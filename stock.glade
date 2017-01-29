@@ -115,6 +115,7 @@
                         <property name="vscrollbar_policy">automatic</property>
                         <child>
                           <object class="GtkTreeView" id="stockTree">
+                            <property name="height_request">250</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="model">liststore1</property>
