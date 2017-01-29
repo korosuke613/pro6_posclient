@@ -117,7 +117,7 @@
               <object class="GtkImage" id="productImage">
                 <property name="height_request">150</property>
                 <property name="visible">True</property>
-                <property name="pixbuf">kyorotyan08_1.jpg</property>
+                <property name="pixbuf">pro6POS_logo.png</property>
                 <property name="icon-size">1</property>
               </object>
               <packing>
