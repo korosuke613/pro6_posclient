@@ -66,6 +66,7 @@
                             <property name="visible">True</property>
                             <property name="use_underline">True</property>
                             <property name="use_stock">True</property>
+                            <signal name="activate" handler="cb_info_win_open"/>
                           </object>
                         </child>
                       </object>
@@ -384,6 +385,45 @@
           <packing>
             <property name="expand">False</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="infoWindow">
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">normal</property>
+    <property name="program_name">POS&#x30EC;&#x30B8;</property>
+    <property name="version">1.10</property>
+    <property name="copyright" translatable="yes">Copyright 2016-2017  Team.I, University of Miyazaki.</property>
+    <property name="comments" translatable="yes">&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30DF;&#x30F3;&#x30B0;&#x6F14;&#x7FD2;&#xFF16;&#x3067;&#x4F5C;&#x6210;&#x3057;&#x305F;&#x3001;POS&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x3059;</property>
+    <property name="website">https://github.com/korosuke613/pro6_posclient</property>
+    <property name="authors">Yuki TAGUCHI
+Shingo SATO
+Yuto Sumiyoshi
+Futa HIRAKOBA
+Takumi HIRAMATSU</property>
+    <property name="logo">pro6POS_logo.png</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <signal name="remove" handler="cb_info_cancel"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </object>
