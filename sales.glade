@@ -4,6 +4,7 @@
   <!-- interface-naming-policy project-wide -->
   <object class="GtkDialog" id="breakDialog">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#xFF1A;&#x8B66;&#x544A;</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
@@ -101,6 +102,7 @@
     </columns>
   </object>
   <object class="GtkWindow" id="salesWindow">
+    <property name="title" translatable="yes">&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#xFF1A;&#x30E1;&#x30A4;&#x30F3;</property>
     <property name="window_position">center</property>
     <property name="deletable">False</property>
     <signal name="destroy" handler="cb_sales2_win_open"/>
@@ -115,7 +117,7 @@
               <object class="GtkImage" id="productImage">
                 <property name="height_request">150</property>
                 <property name="visible">True</property>
-                <property name="pixbuf">kyorotyan08_1.jpg</property>
+                <property name="pixbuf">pro6POS_logo.png</property>
                 <property name="icon-size">1</property>
               </object>
               <packing>
@@ -618,6 +620,7 @@
   </object>
   <object class="GtkDialog" id="nenreiDialog">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#xFF1A;&#x8B66;&#x544A;</property>
     <property name="type_hint">normal</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
@@ -679,6 +682,7 @@
     </action-widgets>
   </object>
   <object class="GtkWindow" id="pointcardWindow">
+    <property name="title" translatable="yes">&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#xFF1A;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x30AB;&#x30FC;&#x30C9;&#x5165;&#x529B;</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <signal name="delete_event" handler="cb_sales3_win_cancel"/>
@@ -769,6 +773,7 @@
     </child>
   </object>
   <object class="GtkWindow" id="resultWindow">
+    <property name="title" translatable="yes">&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#xFF1A;&#x7CBE;&#x7B97;&#x753B;&#x9762;</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="deletable">False</property>
@@ -964,6 +969,7 @@
   </object>
   <object class="GtkDialog" id="resultdangerDialog">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#xFF1A;&#x8B66;&#x544A;</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
@@ -1033,7 +1039,7 @@
   </object>
   <object class="GtkDialog" id="endDialog">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">&#x7CBE;&#x7B97;&#x5B8C;&#x4E86;!</property>
+    <property name="title" translatable="yes">&#x8CA9;&#x58F2;&#x4F1A;&#x8A08;&#xFF1A;&#x30EC;&#x30B7;&#x30FC;&#x30C8;</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>

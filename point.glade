@@ -4,6 +4,7 @@
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="pointWindow">
     <property name="title" translatable="yes">&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x30AB;&#x30FC;&#x30C9;&#x767A;&#x884C;</property>
+    <property name="window_position">center</property>
     <property name="default_width">450</property>
     <property name="default_height">100</property>
     <signal name="destroy" handler="cb_point_cancel"/>
