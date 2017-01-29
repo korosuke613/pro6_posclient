@@ -21,6 +21,7 @@
     </columns>
   </object>
   <object class="GtkWindow" id="add3Window">
+    <property name="title" translatable="yes">&#x5165;&#x8377;</property>
     <property name="window_position">center-always</property>
     <property name="default_width">800</property>
     <child>

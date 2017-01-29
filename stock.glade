@@ -17,6 +17,7 @@
     </columns>
   </object>
   <object class="GtkWindow" id="manageWindow">
+    <property name="title" translatable="yes">&#x5728;&#x5EAB;&#x7BA1;&#x7406;</property>
     <property name="window_position">center-always</property>
     <property name="default_width">1000</property>
     <signal name="destroy" handler="cb_stock_cancel"/>

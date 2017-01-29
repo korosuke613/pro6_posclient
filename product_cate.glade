@@ -31,7 +31,7 @@
     </columns>
   </object>
   <object class="GtkWindow" id="cateWindow">
-    <property name="title" translatable="yes">&#x5546;&#x54C1;&#x7BA1;&#x7406;</property>
+    <property name="title" translatable="yes">&#x5546;&#x54C1;&#x7BA1;&#x7406;&#xFF1A;&#x5546;&#x54C1;&#x60C5;&#x5831;</property>
     <property name="default_width">440</property>
     <property name="default_height">250</property>
     <signal name="destroy" handler="cb_prodinfo_cancel"/>

@@ -3,6 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="prod_mainWindow">
+    <property name="title" translatable="yes">&#x5546;&#x54C1;&#x7BA1;&#x7406;</property>
     <property name="default_width">440</property>
     <property name="default_height">250</property>
     <signal name="destroy" handler="cb_promane_cancel"/>
