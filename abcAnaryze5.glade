@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name 商品id -->
+      <column type="gchararray"/>
+      <!-- column-name 商品名 -->
+      <column type="gchararray"/>
+      <!-- column-name 売上数量 -->
+      <column type="gchararray"/>
+      <!-- column-name 商品価格 -->
+      <column type="gchararray"/>
+      <!-- column-name 売上金額 -->
+      <column type="gchararray"/>
+      <!-- column-name ランキング -->
+      <column type="gchararray"/>
+      <!-- column-name 重要品目区分 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkWindow" id="abcwindow1">
+    <property name="border_width">10</property>
+    <property name="title" translatable="yes">ABC&#x5206;&#x6790;(&#x7D50;&#x679C;&#x753B;&#x9762;)</property>
+    <property name="window_position">center-always</property>
+    <property name="default_width">600</property>
+    <property name="default_height">200</property>
+    <signal name="destroy" handler="cb_abc5_cancel"/>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="height_request">253</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <child>
+              <object class="GtkTreeView" id="treeview1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">liststore1</property>
+                <child>
+                  <object class="GtkTreeViewColumn" id="idtree">
+                    <property name="title">&#x5546;&#x54C1;id</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="nametree">
+                    <property name="title">&#x5546;&#x54C1;&#x540D;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="selltree">
+                    <property name="title">&#x58F2;&#x4E0A;&#x6570;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                      <attributes>
+                        <attribute name="text">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="valuetree">
+                    <property name="title">&#x5546;&#x54C1;&#x4FA1;&#x683C;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                      <attributes>
+                        <attribute name="text">3</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="autree">
+                    <property name="title">&#x58F2;&#x4E0A;&#x91D1;&#x984D;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                      <attributes>
+                        <attribute name="text">4</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="ranktree">
+                    <property name="title">&#x30E9;&#x30F3;&#x30AD;&#x30F3;&#x30B0;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext6"/>
+                      <attributes>
+                        <attribute name="text">5</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="abctree">
+                    <property name="title">&#x91CD;&#x8981;&#x54C1;&#x76EE;&#x533A;&#x5206;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext7"/>
+                      <attributes>
+                        <attribute name="text">6</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="disp_label">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&#x9078;&#x629E;&#x3057;&#x305F;&#x7D50;&#x679C;&#x2191;&#x306E;&#x7D50;&#x679C;&#x306B;&#x306A;&#x308A;&#x307E;&#x3057;&#x305F;&#x3002;</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHButtonBox" id="hbuttonbox2">
+            <property name="visible">True</property>
+            <property name="layout_style">spread</property>
+            <child>
+              <object class="GtkButton" id="Backbutton">
+                <property name="label" translatable="yes">&#x623B;&#x308B;</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="cb_abc5_cancel"/>
+                <signal name="clicked" handler="cb_abc_win_open"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="Menubutton">
+                <property name="label" translatable="yes">&#x30E1;&#x30CB;&#x30E5;&#x30FC;&#x3078;</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="cb_abc5_cancel"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

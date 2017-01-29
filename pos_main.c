@@ -28,10 +28,6 @@ int main(int argc, char *argv[]){
 	MainHandleData *hData;      //メイン画面の主要Widget保持用
 	char       labelBuf[BUFSIZE];
 	int        port;
-    const char *userStr, *passwordStr;
-    char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-    int sendLen, recvLen, recordCount, n;
-    char *records[RECORD_MAX], response[BUFSIZE], param1[BUFSIZE], param2[BUFSIZE], param3[BUFSIZE], param4[BUFSIZE];
 
 	if(argc != 3){
 		printf("Usage: %s server-ipaddr port\n", argv[0]);
@@ -96,29 +92,6 @@ int main(int argc, char *argv[]){
 
 	/* メイン・ウィンドウ上のすべてウィジェットを表示 */
 	gtk_widget_show_all(hData->mainWindow);
-
-
-
-    /*通信用のソケットディスクリプタが空でないかチェック*/
-    if(g_soc>0){
-        sendLen = sprintf(sendBuf, "%s %s %s %s",LOGIN,"101","password",ENTER);
-        send(g_soc, sendBuf, sendLen, 0);
-        recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-        recordCount=record_division(recvBuf, records);
-        memset(response,0,BUFSIZE);
-        memset(param1,0,BUFSIZE);
-        memset(param2,0,BUFSIZE);
-        memset(param3,0,BUFSIZE);
-        memset(param4,0,BUFSIZE);
-        
-        /* レスポンスメッセージを解析 */
-        n = sscanf(records[0], "%s %s %s %s %s", response, param1, param2, param3, param4);
-        
-
-        set_capability_enable(hData, param4, param3, atoi(param1), atoi(param2));
-    }
-
-
 
 	/* メインループ */
 	gtk_main();

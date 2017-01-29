@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name customerId -->
+      <column type="gint"/>
+      <!-- column-name customerName -->
+      <column type="gchararray"/>
+      <!-- column-name customerSex -->
+      <column type="gchararray"/>
+      <!-- column-name customerBirthday -->
+      <column type="gchararray"/>
+      <!-- column-name customerPlace -->
+      <column type="gchararray"/>
+      <!-- column-name customerPhone -->
+      <column type="gchararray"/>
+      <!-- column-name customerEmail -->
+      <column type="gchararray"/>
+      <!-- column-name customerCard -->
+      <column type="gint"/>
+    </columns>
+  </object>
+  <object class="GtkWindow" id="customerShowWindow">
+    <property name="border_width">10</property>
+    <property name="window_position">center</property>
+    <property name="default_width">750</property>
+    <property name="default_height">400</property>
+    <signal name="destroy" handler="cb_customer_show_cancel"/>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkTreeView" id="customerShowTreeView">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">liststore1</property>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                    <property name="title">&#x9867;&#x5BA2;ID</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowIdLabel"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                    <property name="title">&#x6C0F;&#x540D;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowNameLabel"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                    <property name="title">&#x6027;&#x5225;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowGenderLabel"/>
+                      <attributes>
+                        <attribute name="text">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                    <property name="title">&#x751F;&#x5E74;&#x6708;&#x65E5;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowBirthLabel"/>
+                      <attributes>
+                        <attribute name="text">3</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                    <property name="title">&#x4F4F;&#x6240;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowAddressLabel"/>
+                      <attributes>
+                        <attribute name="text">4</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+                    <property name="title">TEL</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowPhoneLabel"/>
+                      <attributes>
+                        <attribute name="text">5</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+                    <property name="title">Emal</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowEmailLabel"/>
+                      <attributes>
+                        <attribute name="text">6</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn8">
+                    <property name="title">&#x30AB;&#x30FC;&#x30C9;&#x756A;&#x53F7;</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="customerShowCardLabel"/>
+                      <attributes>
+                        <attribute name="text">7</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHButtonBox" id="hbuttonbox1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="customerShowFinishButton">
+                <property name="label" translatable="yes">&#x7D42;&#x4E86;</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="cb_customer_show_cancel"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
