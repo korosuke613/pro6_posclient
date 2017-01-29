@@ -15,6 +15,10 @@
 #define _INCLUDE_SALES_
 
 #include "pos_client.h"
+#include <time.h>
+
+#define MALE 1
+#define FEMALE 0
 
 // プロトコルコマンド 
 
@@ -30,12 +34,28 @@ extern int g_sales1WindowFlag;
 const gchar *ageData[]={"10代以下", "20代", "30代","40代","50代","60代以上"};
 const gchar *weatherData[]={"晴れ", "雨", "曇り","雪"};
 
+typedef struct _BuyData{
+	int productNumber;
+	int purchaseNumber;
+	int buyNumber;
+}BuyData;
+
 //*** 販売会計画面のWidget with ログイン画面のWidget ***//
 typedef struct _salesHandleData{
 	char *customerId;
 	int useAblePoint;
+	int useMoney;
+	int getPoint;
+	int usePoint;
+	int totalMoney;
 	int pointLogin;
-	
+	char *weatherStr;
+	char *ageStr;
+	const char *KionStr;
+	BuyData nopointData[256];
+	int nopointDataMax;
+	int selectedGender;
+
 	GtkWidget  *salesWindow;           //販売会計ウィンドウ１
 	GtkWidget  *breakDialog;			//breakDialogウィンドウ
 	GtkWidget  *pointcardWindow;
@@ -62,24 +82,11 @@ typedef struct _salesHandleData{
 	GtkLabel *noticeLabel;
 	GtkLabel *totalmoneyLabel;
 	GtkLabel *havepointLabel;
-	GtkLabel *getpointLabel;
-	GtkLabel *oturiLabel;
-	GtkLabel *usepointLabel;
-	GtkLabel *finalhavepointLabel;
 	GtkEntry *moneyEntry;
 	GtkEntry *usepointEntry;
-
+	GtkTextView *reciptBox;
+	GtkEntry *KionEntry;
 	GtkRadioButton *maleRadiobutton;
 	GtkRadioButton *femaleRadiobutton;	
-	GtkRadioButton *nenrei10Radiobutton;
-	GtkRadioButton *nenrei20Radiobutton;
-	GtkRadioButton *nenrei30Radiobutton;
-	GtkRadioButton *nenrei40Radiobutton;
-	GtkRadioButton *sunnyRadiobutton;
-	GtkRadioButton *rainyRadiobutton;
-	GtkRadioButton *cloudyRadiobutton;
-	GtkRadioButton *snowRadiobutton;
-	GtkRadioButton *on_pointRadiobutton;
-	GtkRadioButton *off_pointRadiobutton;
 }_salesHandleData;
 #endif

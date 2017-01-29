@@ -24,6 +24,8 @@ _salesHandleData *salesHData;
 
 void showSalesErrorMsg(GtkLabel *errorLabel, int errorCode);
 void showSalesOkMsg(GtkLabel *okLabel, int okCode);
+void setTextView(GtkTextView *textview, const gchar *text);
+int check_stock(int productid);
 
 G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
 	GtkBuilder			*builder;
@@ -34,55 +36,57 @@ G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
 
 	/* 残高照会画面が表示されていない場合 */
 	if(g_sales1WindowFlag == 0){ 
+
 		/* 残高照会画面の主要Widget保持用構造体を作成 */
 		salesHData = (_salesHandleData *)malloc(sizeof(_salesHandleData));
 		/* sales1.gladeを読み込む */
 		builder = gtk_builder_new();
 		gtk_builder_add_from_file(builder, "sales.glade", NULL);
+		
+		salesHData->nopointDataMax = 0;
 
-		/* 扱う必要のあるWidgetを構造体hDataのメンバに保持 */
-		/* メンバ"balanceWindow"には残高照会画面のウィジェット */
-		/* メンバ"idEntry"には口座IDを入力するテキストエントリウィジェット */
-		/* メンバ"resultLabel"には結果を表示するラベルウィジェット */
+		/* salesWindow */
 		salesHData->salesWindow = GTK_WIDGET( gtk_builder_get_object(builder, "salesWindow") );
 		salesHData->cancelButton1 = GTK_BUTTON( gtk_builder_get_object(builder, "cancelButton1") );
-		salesHData->breakDialog = GTK_WIDGET( gtk_builder_get_object(builder, "breakDialog") );
 		salesHData->cancelButton3 = GTK_BUTTON( gtk_builder_get_object(builder, "cancelButton3") );
-		salesHData->pointcardWindow = GTK_WIDGET( gtk_builder_get_object(builder, "pointcardWindow") );
 		salesHData->nextButton = GTK_BUTTON( gtk_builder_get_object(builder, "nextButton"));
-
+		salesHData->maleRadiobutton = GTK_RADIO_BUTTON(gtk_builder_get_object(builder, "maleRadiobutton"));
+		salesHData->femaleRadiobutton = GTK_RADIO_BUTTON(gtk_builder_get_object(builder, "femaleRadiobutton"));
+		salesHData->valueSpinbutton = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "valueSpinbutton"));
+		salesHData->noticeLabel = GTK_LABEL(gtk_builder_get_object(builder, "noticeLabel"));
 		salesHData->ageComboBox = GTK_COMBO_BOX(gtk_builder_get_object(builder, "ageComboBox"));
-		salesHData->weatherComboBox = GTK_COMBO_BOX(gtk_builder_get_object(builder, "weatherComboBox"));
 		salesHData->ageModel = GTK_LIST_STORE(gtk_combo_box_get_model(salesHData->ageComboBox));
+		salesHData->weatherComboBox = GTK_COMBO_BOX(gtk_builder_get_object(builder, "weatherComboBox"));
 		salesHData->weatherModel = GTK_LIST_STORE(gtk_combo_box_get_model(salesHData->weatherComboBox));
-
 		salesHData->productidEntry = GTK_ENTRY( gtk_builder_get_object(builder, "productidEntry") );
+		salesHData->KionEntry = GTK_ENTRY( gtk_builder_get_object(builder, "KionEntry"));
+
+		/* breakDialog */
+		salesHData->breakDialog = GTK_WIDGET( gtk_builder_get_object(builder, "breakDialog") );
+
+		/* pointcardWindow */
+		salesHData->pointcardWindow = GTK_WIDGET( gtk_builder_get_object(builder, "pointcardWindow") );
 		salesHData->pointidEntry = GTK_ENTRY( gtk_builder_get_object(builder, "pointidEntry") );
 		salesHData->pointresultLabel = GTK_LABEL( gtk_builder_get_object(builder, "pointresultLabel") );
 		salesHData->pointcardButton = GTK_BUTTON(gtk_builder_get_object(builder, "pointcardButton"));
 		salesHData->pointLogin = 0;
+		
+		/* resultdangerDialog */
+		salesHData->resultdangerDialog = GTK_WIDGET( gtk_builder_get_object(builder, "resultdangerDialog") );
 
-		salesHData->maleRadiobutton = GTK_RADIO_BUTTON(gtk_builder_get_object(builder, "maleRadiobutton"));
-		salesHData->femaleRadiobutton = GTK_RADIO_BUTTON(gtk_builder_get_object(builder, "femaleRadiobutton"));
-
-		salesHData->valueSpinbutton = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "valueSpinbutton"));
-
-		salesHData->noticeLabel = GTK_LABEL(gtk_builder_get_object(builder, "noticeLabel"));
+		/* resultWindow */
+		salesHData->resultWindow = GTK_WIDGET( gtk_builder_get_object(builder, "resultWindow") );
 		salesHData->totalmoneyLabel = GTK_LABEL(gtk_builder_get_object(builder, "totalmoneyLabel"));
 		salesHData->havepointLabel = GTK_LABEL(gtk_builder_get_object(builder, "havepointLabel"));
-		salesHData->oturiLabel = GTK_LABEL(gtk_builder_get_object(builder, "oturiLabel"));
-		salesHData->usepointLabel = GTK_LABEL(gtk_builder_get_object(builder, "usepointLabel"));
-		salesHData->getpointLabel = GTK_LABEL(gtk_builder_get_object(builder, "getpointLabel"));
-		salesHData->finalhavepointLabel = GTK_LABEL(gtk_builder_get_object(builder, "finalhavepointLabel"));
-
 		salesHData->moneyEntry = GTK_ENTRY(gtk_builder_get_object(builder, "moneyEntry"));
 		salesHData->usepointEntry = GTK_ENTRY(gtk_builder_get_object(builder, "usepointEntry"));
 
-		salesHData->resultWindow = GTK_WIDGET( gtk_builder_get_object(builder, "resultWindow") );
-		salesHData->resultdangerDialog = GTK_WIDGET( gtk_builder_get_object(builder, "resultdangerDialog") );
-
+		/* endDialog */
 		salesHData->endDialog = GTK_WIDGET( gtk_builder_get_object(builder, "endDialog"));
+		salesHData->reciptBox = GTK_TEXT_VIEW( gtk_builder_get_object(builder, "reciptBox"));
 
+
+		/* salesWindowのツリービュー */
 		for(i=0;i<6;i++){
 			gtk_list_store_append(salesHData->ageModel,&(salesHData->ageIter));
 			gtk_list_store_set(salesHData->ageModel, &(salesHData->ageIter), 0, ageData[i], -1);
@@ -114,7 +118,7 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
 	int sendLen, recvLen, recordCount=0;
 	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
-	int i, productPrice;
+	int i, productPrice, no;
 	char productName[BUFSIZE], productidStr[BUFSIZE], purchaseidStr[BUFSIZE];
 
 	tmp = gtk_entry_get_text(salesHData->productidEntry);
@@ -140,17 +144,27 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 		}
 
 		if(salesHData->pointLogin == 0){
+			
+			if(!check_stock(atoi(productidStr)))return;
+
 			/* レスポンスメッセージを解析 */
 			sscanf(records[0], "%s %s", response, param[0]);
 
 			for(i=1;i<recordCount;i++){
 				sscanf(records[i], "%s %s %s %s %s %s %s", param[0], param[1], param[2], param[3], param[4], param[5], param[6]);
-				if(atoi(param[1]) == atoi(productidStr)){
+				if(atoi(param[1]) == atoi(productidStr)){					
+					if(check_rimit_day(param[6]))return;
+					salesHData->nopointDataMax++;
 					strcpy(productName, param[2]);
-					productPrice = (int)((double)atoi(param[3])/0.7);
+					productPrice = (int)((double)atoi(param[3])/0.648);
+					salesHData->nopointData[salesHData->nopointDataMax].productNumber = atoi(productidStr);
+					salesHData->nopointData[salesHData->nopointDataMax].purchaseNumber = atoi(purchaseidStr);
+					salesHData->nopointData[salesHData->nopointDataMax].buyNumber = 1;
+					no = salesHData->nopointDataMax;
 					break;
 				}
 			}
+		
 		}else{
 			sscanf(records[0], "%s %s %s %s %s %s", param[0], param[1], param[2], param[3], param[4], param[5]);
 			strcpy(productName, param[2]);
@@ -160,6 +174,7 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 				return;
 			}
 			showSalesOkMsg(salesHData->noticeLabel, 0);
+			no = atoi(param[1]);
 		}
 
 
@@ -171,7 +186,7 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 				3, productPrice, 
 				4, 1, 
 				5, productPrice,
-				6, atoi(param[1]),
+				6, no,
 				-1
 				);
 		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->nextButton), TRUE);
@@ -181,6 +196,66 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 
 }
 
+int check_rimit_day(char *date){
+	time_t now;
+	struct tm *ltm;
+	char day[3], year[5], month[3];
+	
+	time(&now);
+	ltm = localtime(&now);
+
+	strncpy(year, date, 4);
+	year[4]='\0';
+
+	strncpy(month, date+5, 2);
+	month[2]='\0';
+	
+	strcpy(day, date+8);
+
+	printf("y=%s m=%s d=%s\n", year, month, day);
+	printf("y=%d m=%d d=%d\n", atoi(year), atoi(month), atoi(day));
+
+	if(ltm->tm_year+1900 > atoi(year))return 1;
+	else if(ltm->tm_year+1900 < atoi(year))return 0;
+	else{
+		if(ltm->tm_mon+1 > atoi(month))return 1;
+		else if(ltm->tm_mon+1 < atoi(month))return 0;
+		else{
+			if(ltm->tm_mday > atoi(day))return 1;
+			else if(ltm->tm_mday <= atoi(day))return 0;
+		}
+	}
+	
+	return 0;
+
+}
+
+int check_stock(int productid){
+	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
+	int sendLen, recvLen, recordCount=0;
+	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
+	int i;
+
+	sendLen = sprintf(sendBuf, "%s %d %s","STOCK_DISP",g_storeId,ENTER);
+	send(g_soc, sendBuf, sendLen, 0);
+	recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
+	recordCount=record_division(recvBuf, records);
+	memset(response,0,BUFSIZE);
+	for(i=0;i<9;i++){
+		memset(param[i],0,BUFSIZE);
+	}
+	/* レスポンスメッセージを解析 */
+	sscanf(records[0], "%s %s", response, param[0]);
+
+	for(i=1;i<recordCount;i++){
+		sscanf(records[i], "%s %s %s", param[0], param[1], param[2]);
+		if(atoi(param[0]) == productid){
+			if(atoi(param[2]) > 0)return 1;
+			else return 0;
+		}
+	}
+	return 0;
+}
 /**
  * コールバック関数：「戻る」ボタンのクリックによりウィンドウを非表示にする
  * cb_sales1_win_cancel
@@ -191,7 +266,6 @@ G_MODULE_EXPORT void cb_sales1_win_cancel(GtkButton *button, gpointer data){
 	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
 	int i;
 
-	if(salesHData->pointLogin == 1){
 		sendLen = sprintf(sendBuf, "%s%s","CANCEL",ENTER);
 		send(g_soc, sendBuf, sendLen, 0);
 		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
@@ -202,7 +276,6 @@ G_MODULE_EXPORT void cb_sales1_win_cancel(GtkButton *button, gpointer data){
 		}
 		/* レスポンスメッセージを解析 */
 		sscanf(records[0], "%s", response);
-	}
 
 
 	/* 残高照会画面（ウィンドウ）を非表示 */
@@ -341,6 +414,11 @@ G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
 		gtk_tree_model_get(GTK_TREE_MODEL(store), &iter, 6, &selectNum, -1);
 		gtk_list_store_remove(store, &iter);
 
+		if(salesHData->pointLogin == 0){
+			salesHData->nopointData[selectNum].buyNumber = 0;
+			return;
+		}
+
 		if(g_soc>0){
 			sendLen = sprintf(sendBuf, "%s %d %s %s","CORRECT", selectNum, "0",ENTER);
 			send(g_soc, sendBuf, sendLen, 0);
@@ -386,10 +464,30 @@ G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
 	model = GTK_TREE_MODEL(gtk_tree_view_get_model(salesHData->productTree));
 	success = gtk_tree_selection_get_selected(selection, NULL, &iter);
 	if(success){
-		gtk_tree_model_get(GTK_TREE_MODEL(store), &iter, 0, &productid, 1, &purchaseid, 2, &productName, 3,  &productPrice, 6, &selectNum, -1);
+		gtk_tree_model_get(GTK_TREE_MODEL(store), &iter, 0, 
+				&productid, 1, &purchaseid, 2, &productName, 3,  
+				&productPrice, 6, &selectNum, -1);
 
 		//スピンボタンの値を取得
 		num = (int)gtk_spin_button_get_value(salesHData->valueSpinbutton);
+		if(num < 1){
+			return;
+		}
+
+			gtk_list_store_set(salesHData->productModel, &iter,
+					0, productid, 
+					1, purchaseid, 
+					2, productName, 
+					3, productPrice, 
+					4, num,
+					5, num*productPrice,
+					6, selectNum,
+					-1
+					);         
+		if(salesHData->pointLogin == 0){
+			salesHData->nopointData[selectNum].buyNumber = num;
+			return;
+		}
 
 		if(g_soc>0){
 			sendLen = sprintf(sendBuf, "%s %d %d %s","CORRECT", selectNum, num, ENTER);
@@ -401,50 +499,48 @@ G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
 				memset(param[i],0,BUFSIZE);
 			}
 			/* レスポンスメッセージを解析 */
-			sscanf(records[0], "%s %s %s %s %s %s %s", response, param[0], param[1], param[2], param[3], param[4], param[5]);
-			//gtk_list_store_append(salesHData->productModel, &iter);
-			gtk_list_store_set(salesHData->productModel, &iter,
-					0, productid, 
-					1, purchaseid, 
-					2, productName, 
-					3, productPrice, 
-					4, num,
-					5, num*productPrice,
-					6, selectNum,
-					-1
-					);         
-
+			sscanf(records[0], "%s %s %s %s %s %s %s", 
+					response, param[0], param[1], param[2], param[3], param[4], param[5]);
 			if(strcmp(response, OK_STAT) != 0){
 				/* エラーメッセージを表示 */
-				showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
+				showSalesErrorMsg(salesHData->noticeLabel, atoi(param[0]));
 				return;
 			}
+			//gtk_list_store_append(salesHData->productModel, &iter);
+
 			showSalesOkMsg(salesHData->noticeLabel, 0);
 		}
 	}
 }
 
 G_MODULE_EXPORT void cb_sales4_win_open(GtkButton *button, gpointer data){
-
-	/* 残高照会画面が表示されていない場合 */
-	if(g_sales4WindowFlag == 0){ 
-		gtk_widget_show_all(salesHData->resultWindow);
-		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
-		gtk_widget_hide(salesHData->resultdangerDialog);
-		/* 残高照会画面表示フラグをセット */
-		g_sales4WindowFlag = 1;
-	}   
-}
-
-
-G_MODULE_EXPORT void cb_sales5_win_open(GtkButton *button, gpointer data){
 	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
 	int sendLen, recvLen, recordCount=0;
 	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
 	int i;
 
+
+	if(salesHData->pointLogin == 0){
+		sendLen = sprintf(sendBuf, "%s %d %s %d %s %s","SELV_SALE", g_storeId, "0", salesHData->selectedGender, salesHData->ageStr, ENTER);
+		send(g_soc, sendBuf, sendLen, 0);
+		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
+		recordCount=record_division(recvBuf, records);
+		for(i=1;i<=salesHData->nopointDataMax;i++){
+			if(salesHData->nopointData[i].buyNumber == 0)continue;
+			sendLen = sprintf(sendBuf, "%s %d %d %d %s", 
+					"SALE", 
+					salesHData->nopointData[i].productNumber, 
+					salesHData->nopointData[i].purchaseNumber,
+					salesHData->nopointData[i].buyNumber, 
+					ENTER);
+			printf("%s", sendBuf);
+			send(g_soc, sendBuf, sendLen, 0);
+			recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
+			recordCount=record_division(recvBuf, records);
+		}
+	}
 	/* 残高照会画面が表示されていない場合 */
-	if(g_sales5WindowFlag == 0){ 
+	if(g_sales4WindowFlag == 0){ 
 		sendLen = sprintf(sendBuf, "%s%s","RESULT",ENTER);
 		send(g_soc, sendBuf, sendLen, 0);
 		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
@@ -456,19 +552,63 @@ G_MODULE_EXPORT void cb_sales5_win_open(GtkButton *button, gpointer data){
 		/* レスポンスメッセージを解析 */
 		sscanf(records[0], "%s %s %s %s", response, param[0], param[1], param[2]);
 
+		salesHData->totalMoney = atoi(param[0]);
 		gtk_label_set_text(salesHData->totalmoneyLabel, param[0]);
 
 		if(atoi(param[0]) < atoi(param[1]))salesHData->useAblePoint = atoi(param[0]);
 		else salesHData->useAblePoint = atoi(param[1]);
 
+		salesHData->getPoint = atoi(param[2]);
+
 		sprintf(param[8], "%s%d%s", "利用ポイント(最大", salesHData->useAblePoint, ")");
 		gtk_label_set_text(salesHData->havepointLabel, param[8]);
-		sprintf(param[7], "%s%s", "今回付与ポイント：", param[2]);
-		gtk_label_set_text(salesHData->getpointLabel, param[7]);
-
-
-		gtk_widget_show_all(salesHData->resultdangerDialog);
+		
+		gtk_widget_show_all(salesHData->resultWindow);
 		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+		gtk_widget_hide(salesHData->resultdangerDialog);
+		/* 残高照会画面表示フラグをセット */
+		g_sales4WindowFlag = 1;
+	}   
+}
+
+
+G_MODULE_EXPORT void cb_sales5_win_open(GtkButton *button, gpointer data){
+
+	GtkTreeModel	*model;
+	GtkTreeIter		iter;
+
+	model = gtk_combo_box_get_model(salesHData->weatherComboBox);
+	if(!gtk_combo_box_get_active_iter(salesHData->weatherComboBox, &iter)){
+		return;
+	}
+	if(gtk_entry_get_text_length(salesHData->KionEntry) == 0){
+		return;
+	}
+	gtk_tree_model_get(model, &iter, 0, &(salesHData->weatherStr), -1); 
+
+	model = gtk_combo_box_get_model(salesHData->ageComboBox);
+	if(salesHData->pointLogin == 0){
+		if(!gtk_combo_box_get_active_iter(salesHData->ageComboBox, &iter)){
+			return;
+		}
+		gtk_tree_model_get(model, &iter, 0, &(salesHData->ageStr), -1); 
+		salesHData->ageStr[2]='\0';
+		printf("age=%s\n", salesHData->ageStr);
+		if(gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(salesHData->maleRadiobutton))){
+			salesHData->selectedGender = MALE;
+			printf("male\n");
+		}else{
+			printf("female\n");
+			salesHData->selectedGender = FEMALE;
+		}
+	}
+	salesHData->KionStr = gtk_entry_get_text(salesHData->KionEntry);
+
+
+	/* 残高照会画面が表示されていない場合 */
+	if(g_sales5WindowFlag == 0){ 
+		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+		gtk_widget_show_all(salesHData->resultdangerDialog);
 		/* 残高照会画面表示フラグをセット */
 		g_sales5WindowFlag = 1;
 
@@ -487,23 +627,33 @@ G_MODULE_EXPORT void cb_sales5_win_cancel(GtkButton *button, gpointer data){
 G_MODULE_EXPORT void cb_sales6_win_open(GtkButton *button, gpointer data){
 	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
 	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
+	char *records[RECORD_MAX], response[BUFSIZE], param[16][BUFSIZE], reciptText[BUFSIZE], resultTime[BUFSIZE];
 	int i;
 	const char *moneyStr, *usepointStr;
+
+	time_t now;
+	struct tm *ltm;
 
 	/* 残高照会画面が表示されていない場合 */
 	if(g_sales6WindowFlag == 0){ 
 
 		moneyStr = gtk_entry_get_text(salesHData->moneyEntry);
 		usepointStr = gtk_entry_get_text(salesHData->usepointEntry);
+		salesHData->useMoney = atoi(moneyStr);
+		salesHData->usePoint = atoi(usepointStr);
 
 		if(salesHData->useAblePoint < atoi(usepointStr)){
 			//showErrorMsg
 			return;
 		}
-		//ここにエラー処理追加
 
-		sendLen = sprintf(sendBuf, "%s %s %s %s%s","END", "8", "晴れ", "20", ENTER);
+		if((salesHData->useMoney + salesHData->usePoint) < salesHData->totalMoney){
+			//ここにエラー処理追加
+			return;
+		}
+
+		sendLen = sprintf(sendBuf, "%s %d %s %s%s", 
+				"END", salesHData->usePoint, salesHData->weatherStr, salesHData->KionStr, ENTER);
 		send(g_soc, sendBuf, sendLen, 0);
 		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
 		recordCount=record_division(recvBuf, records);
@@ -512,15 +662,35 @@ G_MODULE_EXPORT void cb_sales6_win_open(GtkButton *button, gpointer data){
 			memset(param[i],0,BUFSIZE);
 		}
 		/* レスポンスメッセージを解析 */
-		sscanf(records[0], "%s %s %s %s", response, param[0], param[1], param[2]);
+		sscanf(records[0], "%s %s %s", response, param[0], param[1]);
 
-		sprintf(param[6], "%s%s", "おつり：", moneyStr);
-		sprintf(param[7], "%s%s", "使用ポイント：", usepointStr);
-		sprintf(param[8], "%s%s", "現在保有ポイント：", "300");
-		gtk_label_set_text(salesHData->oturiLabel, param[6]);
-		gtk_label_set_text(salesHData->usepointLabel, param[7]);
-		gtk_label_set_text(salesHData->finalhavepointLabel, param[8]);
+		time(&now);
+		ltm = localtime(&now);
 
+		sprintf(resultTime, "%d/%d/%d %d:%d", ltm->tm_year+1900, ltm->tm_mon+1, ltm->tm_mday, ltm->tm_hour, ltm->tm_min);
+		sprintf(param[3], "%s%d", "小計：￥", salesHData->totalMoney);
+		sprintf(param[5], "%s%d", "使用ポイント：", salesHData->usePoint);
+		sprintf(param[9], "%s%s", "合計：￥", param[0]);
+		sprintf(param[4], "%s%d", "お預り：￥", salesHData->useMoney);
+		sprintf(param[6], "%s%d", "お釣り：￥", salesHData->useMoney + salesHData->usePoint - salesHData->totalMoney);
+		sprintf(param[7], "%s%d", "発行ポイント：", salesHData->getPoint);
+		sprintf(param[8], "%s%s", "現在保有ポイント：", param[1]);
+
+		sprintf(reciptText, 
+				"%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", 
+				resultTime,
+				param[3],	//小計
+				param[5],	//使用ポイント
+				param[9],	//合計
+				"------------------------",
+				param[4],	//お預り
+				param[6],	//お釣り
+				"------------------------",
+				param[7],	//発行ポイント
+				param[8]	//現在保有ポイント
+			   );
+
+		setTextView(salesHData->reciptBox, reciptText);
 
 
 		gtk_widget_show_all(salesHData->endDialog);
@@ -568,4 +738,12 @@ void showSalesOkMsg(GtkLabel *okLabel, int okCode){
 			gtk_label_set_text(okLabel, "商品をスキャンしてください");
 			break;
 	}
+}
+
+void setTextView(GtkTextView *textview, const gchar *text)
+{
+	GtkTextBuffer *buffer;
+
+	buffer = gtk_text_view_get_buffer(textview);
+	gtk_text_buffer_set_text(buffer, text, -1);
 }

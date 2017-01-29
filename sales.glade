@@ -161,6 +161,39 @@
               </packing>
             </child>
             <child>
+              <object class="GtkHButtonBox" id="hbuttonbox1">
+                <property name="visible">True</property>
+                <property name="layout_style">edge</property>
+                <child>
+                  <object class="GtkLabel" id="label12">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&#x6C17;&#x6E29;(&#xB0;C)</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="KionEntry">
+                    <property name="width_request">80</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkHButtonBox" id="hbuttonbox6">
                 <property name="visible">True</property>
                 <property name="homogeneous">True</property>
@@ -196,7 +229,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -262,7 +295,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -286,7 +319,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
           </object>
@@ -923,6 +956,7 @@
     </child>
   </object>
   <object class="GtkAdjustment" id="adjustment1">
+    <property name="lower">0.99999999977648257</property>
     <property name="upper">100</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -1010,39 +1044,30 @@
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <object class="GtkLabel" id="oturiLabel">
+          <object class="GtkFrame" id="flame">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">&#x304A;&#x3064;&#x308A;</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTextView" id="reciptBox">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="editable">False</property>
+                <property name="left_margin">5</property>
+                <property name="right_margin">5</property>
+                <property name="cursor_visible">False</property>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;&#x30EC;&#x30B7;&#x30FC;&#x30C8;&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="usepointLabel">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">&#x4F7F;&#x7528;&#x30DD;&#x30A4;&#x30F3;&#x30C8;</property>
-          </object>
-          <packing>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="getpointLabel">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">&#x4ECA;&#x56DE;&#x4ED8;&#x4E0E;&#x30DD;&#x30A4;&#x30F3;&#x30C8;</property>
-          </object>
-          <packing>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="finalhavepointLabel">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">&#x73FE;&#x5728;&#x4FDD;&#x6709;&#x30DD;&#x30A4;&#x30F3;&#x30C8;</property>
-          </object>
-          <packing>
-            <property name="position">4</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child internal-child="action_area">
@@ -1067,7 +1092,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
-            <property name="position">0</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
