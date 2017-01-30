@@ -3,6 +3,9 @@
 演習室のCentOsのバージョンが低すぎるため、"git push"ができません！  
 なので、こまめな更新ができません....  
 
+##使い方  
+ダウンロードして、端末で"make"すると、"pos"が生成されます。  
+
 ## 参考サイト    
 ### Glade3  
 [Glade3 tutorial](https://wiki.gnome.org/action/show/Apps/Glade/Tutorials?action=show&redirect=Glade%2FTutorials)  
