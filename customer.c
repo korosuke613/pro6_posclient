@@ -131,6 +131,9 @@ G_MODULE_EXPORT void cb_customer_show_exec(GtkButton *button, gpointer data){
       /* エラーメッセージを表示 */
       showErrorMsg(hData->resultLabel, atoi(param1));
       return;
+    }else if(strcmp(param1,"0") == 0){
+      gtk_label_set_text(hData->resultLabel, "データが存在しません。");
+      return;
     }
 
     if(atoi(startNumber) <= 0 || limitNumber-atoi(startNumber) <= 0 && atoi(startNumber) != limitNumber){
