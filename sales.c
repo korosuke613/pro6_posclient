@@ -80,6 +80,7 @@ G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
 		salesHData->havepointLabel = GTK_LABEL(gtk_builder_get_object(builder, "havepointLabel"));
 		salesHData->moneyEntry = GTK_ENTRY(gtk_builder_get_object(builder, "moneyEntry"));
 		salesHData->usepointEntry = GTK_ENTRY(gtk_builder_get_object(builder, "usepointEntry"));
+		salesHData->okButton5 = GTK_BUTTON(gtk_builder_get_object(builder, "okButton5"));
 
 		/* endDialog */
 		salesHData->endDialog = GTK_WIDGET( gtk_builder_get_object(builder, "endDialog"));
@@ -145,15 +146,20 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 
 		if(salesHData->pointLogin == 0){
 			
-			if(!check_stock(atoi(productidStr)))return;
-
+			if(!check_stock(atoi(productidStr))){
+				gtk_label_set_text(salesHData->noticeLabel, "ERROR:在庫切れ");
+				return;
+			}
 			/* レスポンスメッセージを解析 */
 			sscanf(records[0], "%s %s", response, param[0]);
 
 			for(i=1;i<recordCount;i++){
 				sscanf(records[i], "%s %s %s %s %s %s %s", param[0], param[1], param[2], param[3], param[4], param[5], param[6]);
 				if(atoi(param[1]) == atoi(productidStr)){					
-					if(check_rimit_day(param[6]))return;
+					if(check_rimit_day(param[6])){
+						gtk_label_set_text(salesHData->noticeLabel, "ERROR:賞味期限切れ");
+						return;
+					}
 					salesHData->nopointDataMax++;
 					strcpy(productName, param[2]);
 					productPrice = (int)((double)atoi(param[3])/0.648);
@@ -537,6 +543,17 @@ G_MODULE_EXPORT void cb_sales4_win_open(GtkButton *button, gpointer data){
 			send(g_soc, sendBuf, sendLen, 0);
 			recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
 			recordCount=record_division(recvBuf, records);
+			sscanf(records[0], "%s", response);
+			printf("%s\n", response);
+			if(strcmp(response, OK_STAT) != 0){
+				gtk_label_set_text(salesHData->totalmoneyLabel, "エラー");
+				gtk_widget_set_sensitive( GTK_WIDGET(salesHData->okButton5), FALSE );
+		gtk_widget_show_all(salesHData->resultWindow);
+		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+		gtk_widget_hide(salesHData->resultdangerDialog);
+		/* 残高照会画面表示フラグをセット */
+		g_sales4WindowFlag = 1;
+			}	
 		}
 	}
 	/* 残高照会画面が表示されていない場合 */
@@ -579,9 +596,11 @@ G_MODULE_EXPORT void cb_sales5_win_open(GtkButton *button, gpointer data){
 
 	model = gtk_combo_box_get_model(salesHData->weatherComboBox);
 	if(!gtk_combo_box_get_active_iter(salesHData->weatherComboBox, &iter)){
+			gtk_label_set_text(salesHData->noticeLabel, "ERROR:天気未入力");
 		return;
 	}
 	if(gtk_entry_get_text_length(salesHData->KionEntry) == 0){
+			gtk_label_set_text(salesHData->noticeLabel, "ERROR:気温未入力");
 		return;
 	}
 	gtk_tree_model_get(model, &iter, 0, &(salesHData->weatherStr), -1); 
@@ -589,6 +608,7 @@ G_MODULE_EXPORT void cb_sales5_win_open(GtkButton *button, gpointer data){
 	model = gtk_combo_box_get_model(salesHData->ageComboBox);
 	if(salesHData->pointLogin == 0){
 		if(!gtk_combo_box_get_active_iter(salesHData->ageComboBox, &iter)){
+			gtk_label_set_text(salesHData->noticeLabel, "ERROR:年齢未入力");
 			return;
 		}
 		gtk_tree_model_get(model, &iter, 0, &(salesHData->ageStr), -1); 
