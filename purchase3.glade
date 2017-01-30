@@ -23,6 +23,7 @@
   <object class="GtkWindow" id="add3Window">
     <property name="window_position">center-always</property>
     <property name="default_width">800</property>
+    <signal name="destroy" handler="cb_add2_cancel"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>

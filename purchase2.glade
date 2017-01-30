@@ -24,6 +24,7 @@
     <property name="window_position">center-always</property>
     <property name="default_width">800</property>
     <property name="default_height">400</property>
+    <signal name="destroy" handler="cb_add3_cancel"/>
     <child>
       <object class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
