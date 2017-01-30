@@ -21,8 +21,10 @@
     </columns>
   </object>
   <object class="GtkWindow" id="add3Window">
+    <property name="title" translatable="yes">&#x4ED5;&#x5165;&#x308C;&#xFF08;&#x5165;&#x8377;&#xFF09;&#xFF1A;&#x5165;&#x8377;</property>
     <property name="window_position">center-always</property>
     <property name="default_width">800</property>
+    <signal name="destroy" handler="cb_add2_cancel"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>

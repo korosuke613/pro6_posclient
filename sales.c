@@ -80,6 +80,7 @@ G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
 		salesHData->havepointLabel = GTK_LABEL(gtk_builder_get_object(builder, "havepointLabel"));
 		salesHData->moneyEntry = GTK_ENTRY(gtk_builder_get_object(builder, "moneyEntry"));
 		salesHData->usepointEntry = GTK_ENTRY(gtk_builder_get_object(builder, "usepointEntry"));
+		salesHData->resulterrorLabel = GTK_LABEL(gtk_builder_get_object(builder, "resulterrorLabel"));
 		salesHData->okButton5 = GTK_BUTTON(gtk_builder_get_object(builder, "okButton5"));
 
 		/* endDialog */
@@ -664,11 +665,13 @@ G_MODULE_EXPORT void cb_sales6_win_open(GtkButton *button, gpointer data){
 
 		if(salesHData->useAblePoint < atoi(usepointStr)){
 			//showErrorMsg
+			gtk_label_set_text(salesHData->resulterrorLabel, "ERROR:利用可能ポイントオーバー");
 			return;
 		}
 
 		if((salesHData->useMoney + salesHData->usePoint) < salesHData->totalMoney){
 			//ここにエラー処理追加
+			gtk_label_set_text(salesHData->resulterrorLabel, "ERROR:金額不足");
 			return;
 		}
 
@@ -713,8 +716,8 @@ G_MODULE_EXPORT void cb_sales6_win_open(GtkButton *button, gpointer data){
 		setTextView(salesHData->reciptBox, reciptText);
 
 
-		gtk_widget_show_all(salesHData->endDialog);
 		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->resultWindow), FALSE );
+		gtk_widget_show_all(salesHData->endDialog);
 		/* 残高照会画面表示フラグをセット */
 		g_sales6WindowFlag = 1;
 

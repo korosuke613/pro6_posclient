@@ -15,6 +15,7 @@
     </columns>
   </object>
   <object class="GtkWindow" id="add1Window">
+    <property name="title" translatable="yes">&#x4ED5;&#x5165;&#x308C;&#xFF08;&#x5165;&#x8377;&#xFF09;&#xFF1A;&#x5165;&#x8377;&#x60C5;&#x5831;</property>
     <property name="window_position">center-always</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
