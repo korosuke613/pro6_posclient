@@ -396,7 +396,7 @@
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
     <property name="program_name">POS&#x30EC;&#x30B8;</property>
-    <property name="version">1.10</property>
+    <property name="version">1.20</property>
     <property name="copyright" translatable="yes">Copyright 2016-2017  Team.I, University of Miyazaki.</property>
     <property name="comments" translatable="yes">&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30DF;&#x30F3;&#x30B0;&#x6F14;&#x7FD2;&#xFF16;&#x3067;&#x4F5C;&#x6210;&#x3057;&#x305F;&#x3001;POS&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x3059;</property>
     <property name="website">https://github.com/korosuke613/pro6_posclient</property>
