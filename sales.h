@@ -89,5 +89,6 @@ typedef struct _salesHandleData{
 	GtkEntry *KionEntry;
 	GtkRadioButton *maleRadiobutton;
 	GtkRadioButton *femaleRadiobutton;	
+	GtkLabel *resulterrorLabel;
 }_salesHandleData;
 #endif
