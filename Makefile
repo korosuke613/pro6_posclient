@@ -14,8 +14,8 @@ I_SALES_H	:= sales.h
 
 RO_STOCK_C	:= stock.c
 RO_STOCK_H	:= stock.h
-RO_PURCHASE_C	:= purchase.c purchase2.c purchase3.c
-RO_PURCHASE_H	:= purchase.h purchase2.h purchase3.h
+RO_PURCHASE_C	:= purchase.c purchase2.c purchase3.c purchase0.c
+RO_PURCHASE_H	:= purchase.h purchase2.h purchase3.h purchase0.h
 
 HA_PRODUCT_C	:= product.c productadd.c productinfo.c
 HA_PRODUCT_H	:= product.h productadd.h productinfo.h

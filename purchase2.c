@@ -11,7 +11,7 @@
 #include "pos_client.h"
 #include "purchase2.h"
 
-int g_add2WindowFlag;
+int g_add2WindowFlag = 0;
 
 void showErrorMsg4(GtkLabel *erroLabel, int errorCode);
 
@@ -34,7 +34,7 @@ G_MODULE_EXPORT void cb_add2_win_open(GtkButton *button, gpointer data){
   add2hData->add2Button    = GTK_BUTTON( gtk_builder_get_object(builder, "add2Button") );
   add2hData->next2Button    = GTK_BUTTON( gtk_builder_get_object(builder, "next2Button") );  
  add2hData->add2Tree    = GTK_TREE_VIEW( gtk_builder_get_object(builder, "add2Tree") );
-
+ add2hData->resultLabel    = GTK_LABEL( gtk_builder_get_object(builder, "resultLabel") );
   /* シグナル、シグナルハンドラ、ユーザデータ登録 */
   gtk_builder_connect_signals(builder, add2hData);
   /* ログイン画面表示 */
@@ -84,13 +84,13 @@ G_MODULE_EXPORT void cb_add_exec(GtkButton *button, gpointer data){
     recvLen = recv_data(g_soc, recvBuf, BUFSIZE_MAX);
     record_division(recvBuf, records);
     
-    sscanf(records[0], "%s %s", response, param1);
+    sscanf(records[0], "%s %s %s", response, param1);
     if(strcmp(response, OK_STAT) != 0){
       showErrorMsg4(add2HData->resultLabel, atoi(param1));
       return;
     }
 
-    sprintf(insertData, "取扱商品件数　%d",atoi(param1));
+    sprintf(insertData, "仕入れ商品件数　%s",param1);
     gtk_label_set_text(add2HData->resultLabel, insertData);
 
 
