@@ -380,7 +380,7 @@
             <property name="visible">True</property>
             <property name="xalign">0.99000000953674316</property>
             <property name="yalign">0.99000000953674316</property>
-            <property name="label" translatable="yes">Powered by &#x25CB;&#x25CB;&#x25CB;&#x25CB;</property>
+            <property name="label" translatable="yes">Powered by Team.I</property>
           </object>
           <packing>
             <property name="expand">False</property>
