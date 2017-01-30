@@ -90,6 +90,7 @@
                     <property name="receives_default">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
+                    <property name="group">Noradio</property>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -103,7 +104,7 @@
                     <property name="receives_default">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
-                    <property name="group">Manradio</property>
+                    <property name="group">Noradio</property>
                   </object>
                   <packing>
                     <property name="position">2</property>
@@ -117,7 +118,6 @@
                     <property name="receives_default">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
-                    <property name="group">Manradio</property>
                   </object>
                   <packing>
                     <property name="position">3</property>
@@ -283,6 +283,21 @@
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="ResetButton">
+                <property name="label" translatable="yes">&#x30EA;&#x30BB;&#x30C3;&#x30C8;</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="cb_anaryze_cancel"/>
+                <signal name="clicked" handler="cb_sell_win_open"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="BackButton">
                 <property name="label" translatable="yes">&#x623B;&#x308B;</property>
                 <property name="visible">True</property>
@@ -293,7 +308,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
