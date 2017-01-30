@@ -3,6 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="pur0Window">
+    <property name="title" translatable="yes">&#x4ED5;&#x5165;&#x308C;&#xFF08;&#x5165;&#x8377;&#xFF09;</property>
     <property name="window_position">center-always</property>
     <property name="default_width">440</property>
     <property name="default_height">250</property>
