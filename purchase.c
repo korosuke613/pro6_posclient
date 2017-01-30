@@ -11,20 +11,19 @@
 #include "pos_client.h"
 #include "purchase.h"
 
-int g_addWindowFlag;
-
+int g_add1WindowFlag = 0;
 void showErrorMsg6(GtkLabel *resultLabel, int errorCode);
 
-
-
-G_MODULE_EXPORT void cb_add_win_open(GtkButton *button, gpointer data){
+G_MODULE_EXPORT void cb_add0_win_open(GtkButton *button, gpointer data){
   GtkBuilder      *builder;
   addHandleData *addhData; //ログイン画面の主要Widget保持用
-  if(g_addWindowFlag ==0){
+
+  if(g_add1WindowFlag ==0){
+
   /* ログイン画面の主要Widget保持用構造体を作成 */
   addhData = (addHandleData *)malloc(sizeof(addHandleData));
 
-  /* login.gladeを読み込む */
+  /* purchase.gladeを読み込む */
   builder = gtk_builder_new();
   gtk_builder_add_from_file(builder, "purchase.glade", NULL);
   /* 主要Widgetを保持 */
@@ -40,7 +39,7 @@ G_MODULE_EXPORT void cb_add_win_open(GtkButton *button, gpointer data){
   /* ログイン画面表示 */
   gtk_widget_show_all(addhData->add1Window);
 
-  g_addWindowFlag = 1; 
+  g_add1WindowFlag = 1; 
  }
 }
 
@@ -54,7 +53,7 @@ G_MODULE_EXPORT void cb_add_cancel(GtkButton *button, gpointer data){
   /*       Widget              ) */
   free(hData);
   /*               */
-  g_addWindowFlag = 0;
+  g_add1WindowFlag = 0;
 
 }
 
@@ -64,7 +63,7 @@ G_MODULE_EXPORT void cb_pur_exec(GtkButton *button, gpointer data){
   const char        *addStr;
   GtkTreeModel     *model;          //ツリーモデル
   GtkTreeIter      iter;            //行
-  char              sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX],*records[RECORD_MAX],param1[BUFSIZE],param2[BUFSIZE], param3[BUFSIZE],param4[BUFSIZE], param5[BUFSIZE],response[BUFSIZE];
+  char              sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX],*records[RECORD_MAX],param1[BUFSIZE],param2[BUFSIZE], param3[BUFSIZE],param4[BUFSIZE], param5[BUFSIZE],response[BUFSIZE],insertData[BUFSIZE];
   int              i,sendLen, recvLen;
 
   addhData = (addHandleData *)data;
@@ -91,16 +90,15 @@ G_MODULE_EXPORT void cb_pur_exec(GtkButton *button, gpointer data){
     record_division(recvBuf, records);
    
     sscanf(records[0], "%s %s %s", response, param1);
-
     if(strcmp(response, OK_STAT) != 0){
       showErrorMsg6(addhData->result1Label, atoi(param1));
       return;
     }
 
 
-
+    sprintf(insertData, "取扱い商品件数　%s",param1);
     /* 結果セット */
-    gtk_label_set_text(addhData->result1Label , records[i]);
+    gtk_label_set_text(addhData->result1Label , insertData);
  
     for(i=1; i<=atoi(param1); i++){
       sscanf(records[i], "%s %s %s %s",param2, param3, param4, param5);
@@ -117,7 +115,7 @@ void showErrorMsg6(GtkLabel *resultLabel, int errorCode){
 
   switch(errorCode){
   default:
-    gtk_label_set_text(resultLabel, "致命的なエラーが発生しました");
+    gtk_label_set_text(resultLabel, "正しいIDを入力してください");
     break;
 
   }

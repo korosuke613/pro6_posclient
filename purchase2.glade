@@ -21,7 +21,6 @@
     </columns>
   </object>
   <object class="GtkWindow" id="add2Window">
-    <property name="title" translatable="yes">&#x5165;&#x8377;</property>
     <property name="window_position">center-always</property>
     <property name="default_width">800</property>
     <property name="default_height">400</property>
@@ -97,7 +96,7 @@
             <child type="label">
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;&#x5E02;&#x4ED5;&#x5165;&#x308C;ID&lt;/b&gt;</property>
+                <property name="label" translatable="yes">&lt;b&gt;&#x4ED5;&#x5165;&#x308C;ID&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
@@ -121,8 +120,6 @@
                     <child>
                       <object class="GtkLabel" id="resultLabel">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&#x4ED5;&#x5165;&#x308C;&#x5546;&#x54C1;&#x4EF6;&#x6570;&#xFF1A;</property>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -246,31 +243,17 @@
             <property name="visible">True</property>
             <property name="layout_style">spread</property>
             <child>
-              <object class="GtkButton" id="next2Button">
-                <property name="label" translatable="yes">&#x8FFD;&#x52A0;</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="cb_add3_win_open"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="cancel1Button">
                 <property name="label" translatable="yes">&#x623B;&#x308B;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="cb_add_cancel"/>
+                <signal name="clicked" handler="cb_add3_cancel"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
           </object>
