@@ -60,6 +60,7 @@ typedef struct _salesHandleData{
     GtkWidget  *breakDialog;			//breakDialogウィンドウ
     GtkWidget  *pointcardWindow;
     GtkWidget  *resultWindow;
+    GtkWidget  *nenreiDialog;
     GtkWidget  *resultdangerDialog;
     GtkWidget  *endDialog;
     GtkButton  *cancelButton1;          //戻るボタン

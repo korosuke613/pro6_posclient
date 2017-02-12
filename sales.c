@@ -19,6 +19,7 @@ int g_sales3WindowFlag = 0;
 int g_sales4WindowFlag = 0;
 int g_sales5WindowFlag = 0;
 int g_sales6WindowFlag = 0;
+int g_sales7WindowFlag = 0;
 
 _salesHandleData *salesHData;
 
@@ -26,7 +27,7 @@ void showSalesErrorMsg(GtkLabel *errorLabel, int errorCode);
 void showSalesOkMsg(GtkLabel *okLabel, int okCode);
 void setTextView(GtkTextView *textview, const gchar *text);
 int check_stock(int productid);
-
+void cb_sales7_win_open(void);
 
 
 G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
@@ -89,6 +90,8 @@ G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
         salesHData->endDialog = GTK_WIDGET( gtk_builder_get_object(builder, "endDialog"));
         salesHData->reciptBox = GTK_TEXT_VIEW( gtk_builder_get_object(builder, "reciptBox"));
 
+        /* nenreiDialog */
+        salesHData->nenreiDialog = GTK_WIDGET( gtk_builder_get_object(builder, "nenreiDialog"));
 
         /* salesWindowのツリービュー */
         for(i=0;i<6;i++){
@@ -130,6 +133,11 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
     productidStr[5]='\0';
 
     strcpy(purchaseidStr, tmp+5);
+
+    /* たばこ、または酒を買うときに年齢確認をする */
+    if( (atoi(productidStr) / 1000 == 21) || (atoi(productidStr) / 1000 == 51) ){
+        cb_sales7_win_open();
+    }
 
     /*通信用のソケットディスクリプタが空でないかチェック*/
     if(g_soc>0){
@@ -173,7 +181,6 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
                     break;
                 }
             }
-
         }else{
             sscanf(records[0], "%s %s %s %s %s %s", param[0], param[1], param[2], param[3], param[4], param[5]);
             strcpy(productName, param[2]);
@@ -749,6 +756,27 @@ G_MODULE_EXPORT void cb_sales6_win_open(GtkButton *button, gpointer data){
 
     }   
 }
+
+
+void cb_sales7_win_open(void){
+
+        /* 残高照会画面が表示されていない場合 */
+        if(g_sales7WindowFlag == 0){ 
+            gtk_widget_show_all(salesHData->nenreiDialog);
+            gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+            /* 残高照会画面表示フラグをセット */
+            g_sales7WindowFlag = 1;
+        }   
+    
+}
+
+ G_MODULE_EXPORT void cb_sales7_yes(GtkButton *button, gpointer data){
+    /* 残高照会画面（ウィンドウ）を非表示 */
+    gtk_widget_hide(salesHData->nenreiDialog);
+    gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
+    g_sales7WindowFlag = 0;
+}   
+
 /**
  * ログインエラーメッセージ表示
  * showErrorMsg 
