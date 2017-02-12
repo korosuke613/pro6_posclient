@@ -35,60 +35,60 @@ const gchar *ageData[]={"10代以下", "20代", "30代","40代","50代","60代�
 const gchar *weatherData[]={"晴れ", "雨", "曇り","雪"};
 
 typedef struct _BuyData{
-	int productNumber;
-	int purchaseNumber;
-	int buyNumber;
+    int productNumber;
+    int purchaseNumber;
+    int buyNumber;
 }BuyData;
 
 //*** 販売会計画面のWidget with ログイン画面のWidget ***//
 typedef struct _salesHandleData{
-	char *customerId;
-	int useAblePoint;
-	int useMoney;
-	int getPoint;
-	int usePoint;
-	int totalMoney;
-	int pointLogin;
-	char *weatherStr;
-	char *ageStr;
-	const char *KionStr;
-	BuyData nopointData[256];
-	int nopointDataMax;
-	int selectedGender;
+    char *customerId;
+    int useAblePoint;
+    int useMoney;
+    int getPoint;
+    int usePoint;
+    int totalMoney;
+    int pointLogin;
+    char *weatherStr;
+    char *ageStr;
+    const char *KionStr;
+    BuyData nopointData[256];
+    int nopointDataMax;
+    int selectedGender;
 
-	GtkWidget  *salesWindow;           //販売会計ウィンドウ１
-	GtkWidget  *breakDialog;			//breakDialogウィンドウ
-	GtkWidget  *pointcardWindow;
-	GtkWidget  *resultWindow;
-	GtkWidget  *resultdangerDialog;
-	GtkWidget  *endDialog;
-	GtkButton  *cancelButton1;          //戻るボタン
-	GtkButton  *cancelButton3;			//breakDialogのいいえボタン
-	GtkButton  *nextButton;          //次へボタン
-	GtkButton  *okButton5;
-	GtkComboBox	*ageComboBox;
-	GtkListStore *ageModel;
-	GtkTreeIter ageIter;
-	GtkComboBox *weatherComboBox;
-	GtkListStore *weatherModel;
-	GtkTreeIter weatherIter;
-	GtkEntry *productidEntry;
-	GtkTreeView *productTree;
-	GtkListStore *productModel;
-	GtkTreeIter productIter;
-	GtkEntry *pointidEntry;
-	GtkLabel *pointresultLabel;
-	GtkButton *pointcardButton;
-	GtkSpinButton *valueSpinbutton;
-	GtkLabel *noticeLabel;
-	GtkLabel *totalmoneyLabel;
-	GtkLabel *havepointLabel;
-	GtkEntry *moneyEntry;
-	GtkEntry *usepointEntry;
-	GtkTextView *reciptBox;
-	GtkEntry *KionEntry;
-	GtkRadioButton *maleRadiobutton;
-	GtkRadioButton *femaleRadiobutton;	
-	GtkLabel *resulterrorLabel;
+    GtkWidget  *salesWindow;           //販売会計ウィンドウ１
+    GtkWidget  *breakDialog;			//breakDialogウィンドウ
+    GtkWidget  *pointcardWindow;
+    GtkWidget  *resultWindow;
+    GtkWidget  *resultdangerDialog;
+    GtkWidget  *endDialog;
+    GtkButton  *cancelButton1;          //戻るボタン
+    GtkButton  *cancelButton3;			//breakDialogのいいえボタン
+    GtkButton  *nextButton;          //次へボタン
+    GtkButton  *okButton5;
+    GtkComboBox	*ageComboBox;
+    GtkListStore *ageModel;
+    GtkTreeIter ageIter;
+    GtkComboBox *weatherComboBox;
+    GtkListStore *weatherModel;
+    GtkTreeIter weatherIter;
+    GtkEntry *productidEntry;
+    GtkTreeView *productTree;
+    GtkListStore *productModel;
+    GtkTreeIter productIter;
+    GtkEntry *pointidEntry;
+    GtkLabel *pointresultLabel;
+    GtkButton *pointcardButton;
+    GtkSpinButton *valueSpinbutton;
+    GtkLabel *noticeLabel;
+    GtkLabel *totalmoneyLabel;
+    GtkLabel *havepointLabel;
+    GtkEntry *moneyEntry;
+    GtkEntry *usepointEntry;
+    GtkTextView *reciptBox;
+    GtkEntry *KionEntry;
+    GtkRadioButton *maleRadiobutton;
+    GtkRadioButton *femaleRadiobutton;	
+    GtkLabel *resulterrorLabel;
 }_salesHandleData;
 #endif
