@@ -27,6 +27,8 @@ void showSalesOkMsg(GtkLabel *okLabel, int okCode);
 void setTextView(GtkTextView *textview, const gchar *text);
 int check_stock(int productid);
 
+
+
 G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
     GtkBuilder			*builder;
     int i;
@@ -394,6 +396,29 @@ G_MODULE_EXPORT void cb_sales3_exec(GtkButton *button, gpointer data){
         gtk_widget_hide(salesHData->pointcardWindow);
         gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
         g_sales3WindowFlag = 0;
+
+        for(i=1;i<=salesHData->nopointDataMax;i++){
+            if(salesHData->nopointData[i].buyNumber == 0)continue;
+            sendLen = sprintf(sendBuf, "%s %d %d %d %s", 
+                    "SALE", 
+                    salesHData->nopointData[i].productNumber, 
+                    salesHData->nopointData[i].purchaseNumber,
+                    salesHData->nopointData[i].buyNumber, 
+                    ENTER);
+            printf("%s", sendBuf);
+            send(g_soc, sendBuf, sendLen, 0);
+            recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
+            recordCount=record_division(recvBuf, records);
+            sscanf(records[0], "%s", response);
+            printf("%s\n", response);
+            if(strcmp(response, OK_STAT) != 0){
+                gtk_label_set_text(salesHData->totalmoneyLabel, "エラー");
+                gtk_widget_set_sensitive( GTK_WIDGET(salesHData->okButton5), FALSE );
+                gtk_widget_show_all(salesHData->resultWindow);
+                gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+                gtk_widget_hide(salesHData->resultdangerDialog);
+            }	
+        }
     }
 }
 
