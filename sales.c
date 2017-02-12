@@ -311,6 +311,7 @@ G_MODULE_EXPORT void cb_sales1_win_cancel(GtkButton *button, gpointer data){
     g_sales4WindowFlag = 0;
     g_sales5WindowFlag = 0;
     g_sales6WindowFlag = 0;
+    g_sales7WindowFlag = 0;
 }
 
 /**
@@ -770,12 +771,51 @@ void cb_sales7_win_open(void){
     
 }
 
- G_MODULE_EXPORT void cb_sales7_yes(GtkButton *button, gpointer data){
+G_MODULE_EXPORT void cb_sales7_yes(GtkButton *button, gpointer data){
     /* 残高照会画面（ウィンドウ）を非表示 */
     gtk_widget_hide(salesHData->nenreiDialog);
     gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
     g_sales7WindowFlag = 0;
 }   
+
+G_MODULE_EXPORT void cb_sales7_no(GtkButton *button, gpointer data){
+    char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
+    int sendLen, recvLen, recordCount=0;
+    char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
+    int i;
+
+    sendLen = sprintf(sendBuf, "%s%s","CANCEL",ENTER);
+    send(g_soc, sendBuf, sendLen, 0);
+    recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
+    recordCount=record_division(recvBuf, records);
+    memset(response,0,BUFSIZE);
+    for(i=0;i<9;i++){
+        memset(param[i],0,BUFSIZE);
+    }
+    /* レスポンスメッセージを解析 */
+    sscanf(records[0], "%s", response);
+
+
+    /* 残高照会画面（ウィンドウ）を非表示 */
+    gtk_widget_hide(salesHData->salesWindow);
+    gtk_widget_hide(salesHData->breakDialog);
+    gtk_widget_hide(salesHData->pointcardWindow);
+    gtk_widget_hide(salesHData->resultWindow);
+    gtk_widget_hide(salesHData->resultdangerDialog);
+    gtk_widget_hide(salesHData->endDialog);
+    gtk_widget_hide(salesHData->nenreiDialog);
+
+    /* 残高照会画面主要Widget保持構造体を破棄（メモリ開放) */
+    free(salesHData);
+    /* 残高照会画面表示フラグをクリア */
+    g_sales1WindowFlag = 0;
+    g_sales2WindowFlag = 0;
+    g_sales3WindowFlag = 0;
+    g_sales4WindowFlag = 0;
+    g_sales5WindowFlag = 0;
+    g_sales6WindowFlag = 0;
+    g_sales7WindowFlag = 0;   
+}
 
 /**
  * ログインエラーメッセージ表示
