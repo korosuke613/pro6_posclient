@@ -33,9 +33,6 @@ void cb_sales7_win_open(void);
 G_MODULE_EXPORT void cb_sales1_win_open(GtkButton *button, gpointer data){
     GtkBuilder			*builder;
     int i;
-    gint value = 1, min = 0, max = 100;
-    gint step = 1;
-    GtkWidget *tmpSpinbutton;
 
     /* 残高照会画面が表示されていない場合 */
     if(g_sales1WindowFlag == 0){ 
@@ -862,4 +859,18 @@ void setTextView(GtkTextView *textview, const gchar *text)
 
     buffer = gtk_text_view_get_buffer(textview);
     gtk_text_buffer_set_text(buffer, text, -1);
+}
+
+void serverSendFunc(ServerDates *s){
+	int i;
+
+	s->recordCount = 0;
+
+	send(g_soc, s->sendBuf, s->sendLen, 0);
+	s->recvLen = recv_data(g_soc, s->recvLen, BUFSIZE_MAX);
+	s->recordCount = record_division(s->recvBuf, s->records);
+	memset(s->response, 0, BUFSIZE);
+	for(i=0; i<9; i++){
+		memset(s->param[i], 0, BUFSIZE);
+	}
 }

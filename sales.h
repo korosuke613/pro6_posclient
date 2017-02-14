@@ -40,6 +40,17 @@ typedef struct _BuyData{
     int buyNumber;
 }BuyData;
 
+typedef struct _ServerDates{
+	char sendBuf[BUFSIZE];
+	char recvBuf[BUFSIZE];
+	int sendLen;
+	int recvLen;
+	int recordCount;
+	char *records[RECORD_MAX];
+	char response[BUFSIZE];
+	char param[9][BUFSIZE];
+}ServerDates;
+
 //*** 販売会計画面のWidget with ログイン画面のWidget ***//
 typedef struct _salesHandleData{
     char *customerId;
