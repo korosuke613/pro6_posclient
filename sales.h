@@ -42,7 +42,7 @@ typedef struct _BuyData{
 
 typedef struct _ServerDates{
 	char sendBuf[BUFSIZE];
-	char recvBuf[BUFSIZE];
+	char recvBuf[BUFSIZE_MAX];
 	int sendLen;
 	int recvLen;
 	int recordCount;
