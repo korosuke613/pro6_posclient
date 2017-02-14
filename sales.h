@@ -48,7 +48,7 @@ typedef struct _ServerDates{
 	int recordCount;
 	char *records[RECORD_MAX];
 	char response[BUFSIZE];
-	char param[9][BUFSIZE];
+	char param[16][BUFSIZE];
 }ServerDates;
 
 //*** 販売会計画面のWidget with ログイン画面のWidget ***//

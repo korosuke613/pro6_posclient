@@ -27,6 +27,7 @@ void showSalesErrorMsg(GtkLabel *errorLabel, int errorCode);
 void showSalesOkMsg(GtkLabel *okLabel, int okCode);
 void setTextView(GtkTextView *textview, const gchar *text);
 int check_stock(int productid);
+int check_rimit_day(char *data);
 void cb_sales7_win_open(void);
 void serverSendFunc(ServerDates *s);
 
@@ -144,7 +145,6 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 		}
 
 		serverSendFunc(&s);
-		printf("ok\n");
 
 		if(salesHData->pointLogin == 0){
 
@@ -205,87 +205,19 @@ G_MODULE_EXPORT void cb_sales1_send(GtkButton *button, gpointer data){
 
 }
 
-int check_rimit_day(char *date){
-	time_t now;
-	struct tm *ltm;
-	char day[3], year[5], month[3];
-
-	time(&now);
-	ltm = localtime(&now);
-
-	strncpy(year, date, 4);
-	year[4]='\0';
-
-	strncpy(month, date+5, 2);
-	month[2]='\0';
-
-	strcpy(day, date+8);
-
-	printf("y=%s m=%s d=%s\n", year, month, day);
-	printf("y=%d m=%d d=%d\n", atoi(year), atoi(month), atoi(day));
-
-	if(ltm->tm_year+1900 > atoi(year))return 1;
-	else if(ltm->tm_year+1900 < atoi(year))return 0;
-	else{
-		if(ltm->tm_mon+1 > atoi(month))return 1;
-		else if(ltm->tm_mon+1 < atoi(month))return 0;
-		else{
-			if(ltm->tm_mday > atoi(day))return 1;
-			else if(ltm->tm_mday <= atoi(day))return 0;
-		}
-	}
-
-	return 0;
-
-}
-
-int check_stock(int productid){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
-	int i;
-
-	sendLen = sprintf(sendBuf, "%s %d %s","STOCK_DISP",g_storeId,ENTER);
-	send(g_soc, sendBuf, sendLen, 0);
-	recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-	recordCount=record_division(recvBuf, records);
-	memset(response,0,BUFSIZE);
-	for(i=0;i<9;i++){
-		memset(param[i],0,BUFSIZE);
-	}
-	/* レスポンスメッセージを解析 */
-	sscanf(records[0], "%s %s", response, param[0]);
-
-	for(i=1;i<recordCount;i++){
-		sscanf(records[i], "%s %s %s", param[0], param[1], param[2]);
-		if(atoi(param[0]) == productid){
-			if(atoi(param[2]) > 0)return 1;
-			else return 0;
-		}
-	}
-	return 0;
-}
 /**
  * コールバック関数：「戻る」ボタンのクリックによりウィンドウを非表示にする
  * cb_sales1_win_cancel
  **/
 G_MODULE_EXPORT void cb_sales1_win_cancel(GtkButton *button, gpointer data){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
 	int i;
+	ServerDates s;
 
-	sendLen = sprintf(sendBuf, "%s%s","CANCEL",ENTER);
-	send(g_soc, sendBuf, sendLen, 0);
-	recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-	recordCount=record_division(recvBuf, records);
-	memset(response,0,BUFSIZE);
-	for(i=0;i<9;i++){
-		memset(param[i],0,BUFSIZE);
-	}
+	s.sendLen = sprintf(s.sendBuf, "%s%s","CANCEL",ENTER);
+	serverSendFunc(&s);
+
 	/* レスポンスメッセージを解析 */
-	sscanf(records[0], "%s", response);
-
+	sscanf(s.records[0], "%s", s.response);
 
 	/* 残高照会画面（ウィンドウ）を非表示 */
 	gtk_widget_hide(salesHData->salesWindow);
@@ -307,128 +239,10 @@ G_MODULE_EXPORT void cb_sales1_win_cancel(GtkButton *button, gpointer data){
 	g_sales7WindowFlag = 0;
 }
 
-/**
- * コールバック関数
- * cb_balance_exec
- **/
-
-
-
-G_MODULE_EXPORT void cb_sales2_win_open(GtkButton *button, gpointer data){
-
-	/* 残高照会画面が表示されていない場合 */
-	if(g_sales2WindowFlag == 0){ 
-		gtk_widget_show_all(salesHData->breakDialog);
-		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
-		if(g_sales5WindowFlag == 1)gtk_widget_set_sensitive( GTK_WIDGET(salesHData->resultWindow), FALSE );
-		/* 残高照会画面表示フラグをセット */
-		g_sales2WindowFlag = 1;
-	}   
-}
-
-
-G_MODULE_EXPORT void cb_sales2_win_cancel(GtkButton *button, gpointer data){
-	/* 残高照会画面（ウィンドウ）を非表示 */
-	gtk_widget_hide(salesHData->breakDialog);
-	if(g_sales5WindowFlag == 0)gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
-	if(g_sales5WindowFlag == 1)gtk_widget_set_sensitive( GTK_WIDGET(salesHData->resultWindow), TRUE );
-	g_sales2WindowFlag = 0;
-}
-
-
-G_MODULE_EXPORT void cb_sales3_win_open(GtkButton *button, gpointer data){
-
-	if(salesHData->pointLogin == 0){
-		/* 残高照会画面が表示されていない場合 */
-		if(g_sales3WindowFlag == 0){ 
-			gtk_widget_show_all(salesHData->pointcardWindow);
-			gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
-			/* 残高照会画面表示フラグをセット */
-			g_sales3WindowFlag = 1;
-		}   
-	}
-}
-
-
-G_MODULE_EXPORT void cb_sales3_win_cancel(GtkButton *button, gpointer data){
-
-	/* 残高照会画面（ウィンドウ）を非表示 */
-	gtk_widget_hide(salesHData->pointcardWindow);
-	gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
-	g_sales3WindowFlag = 0;
-}
-
-G_MODULE_EXPORT void cb_sales3_exec(GtkButton *button, gpointer data){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
-	int i, productPrice;
-	const char *pointidStr;
-	char labelBuf[BUFSIZE];
-
-	pointidStr = gtk_entry_get_text(salesHData->pointidEntry);
-	/*通信用のソケットディスクリプタが空でないかチェック*/
-	if(g_soc>0){
-		sendLen = sprintf(sendBuf, "%s %d %s %s","SELV_SALE", g_storeId, pointidStr,ENTER);
-		send(g_soc, sendBuf, sendLen, 0);
-		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-		recordCount=record_division(recvBuf, records);
-		memset(response,0,BUFSIZE);
-		for(i=0;i<9;i++){
-			memset(param[i],0,BUFSIZE);
-		}
-		/* レスポンスメッセージを解析 */
-		sscanf(records[0], "%s %s %s", response, param[0], param[1]);
-
-		if(strcmp(response, OK_STAT) != 0){
-			/* エラーメッセージを表示 */
-			showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
-			return;
-		}
-		showSalesOkMsg(salesHData->noticeLabel, 0);
-		salesHData->pointLogin = 1;
-		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->pointcardButton), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->ageComboBox), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->maleRadiobutton), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->femaleRadiobutton), FALSE);
-
-		sprintf(labelBuf,"会員番号：%s", param[1]);
-		gtk_button_set_label(salesHData->pointcardButton, labelBuf);
-		gtk_widget_hide(salesHData->pointcardWindow);
-		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
-		g_sales3WindowFlag = 0;
-
-		for(i=1;i<=salesHData->nopointDataMax;i++){
-			if(salesHData->nopointData[i].buyNumber == 0)continue;
-			sendLen = sprintf(sendBuf, "%s %d %d %d %s", 
-					"SALE", 
-					salesHData->nopointData[i].productNumber, 
-					salesHData->nopointData[i].purchaseNumber,
-					salesHData->nopointData[i].buyNumber, 
-					ENTER);
-			printf("%s", sendBuf);
-			send(g_soc, sendBuf, sendLen, 0);
-			recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-			recordCount=record_division(recvBuf, records);
-			sscanf(records[0], "%s", response);
-			printf("%s\n", response);
-			if(strcmp(response, OK_STAT) != 0){
-				gtk_label_set_text(salesHData->totalmoneyLabel, "エラー");
-				gtk_widget_set_sensitive( GTK_WIDGET(salesHData->okButton5), FALSE );
-				gtk_widget_show_all(salesHData->resultWindow);
-				gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
-				gtk_widget_hide(salesHData->resultdangerDialog);
-			}	
-		}
-	}
-}
-
 G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
 	int i;
-	//テスト用リスト削除コード
+	ServerDates s;
+
 	GtkListStore *store;
 	GtkTreeSelection *selection;
 	GtkTreeIter iter;
@@ -453,20 +267,15 @@ G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
 		}
 
 		if(g_soc>0){
-			sendLen = sprintf(sendBuf, "%s %d %s %s","CORRECT", selectNum, "0",ENTER);
-			send(g_soc, sendBuf, sendLen, 0);
-			recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-			recordCount=record_division(recvBuf, records);
-			memset(response,0,BUFSIZE);
-			for(i=0;i<9;i++){
-				memset(param[i],0,BUFSIZE);
-			}
+			s.sendLen = sprintf(s.sendBuf, "%s %d %s %s","CORRECT", selectNum, "0",ENTER);
+			serverSendFunc(&s);
 			/* レスポンスメッセージを解析 */
-			sscanf(records[0], "%s %s %s %s %s %s %s", response, param[0], param[1], param[2], param[3], param[4], param[5]);
+			sscanf(s.records[0], "%s %s %s %s %s %s %s", 
+					s.response, s.param[0], s.param[1], s.param[2], s.param[3], s.param[4], s.param[5]);
 
-			if(strcmp(response, OK_STAT) != 0){
+			if(strcmp(s.response, OK_STAT) != 0){
 				/* エラーメッセージを表示 */
-				showSalesErrorMsg(salesHData->pointresultLabel, atoi(param[1]));
+				showSalesErrorMsg(salesHData->pointresultLabel, atoi(s.param[1]));
 				return;
 			}
 			showSalesOkMsg(salesHData->noticeLabel, 0);
@@ -475,9 +284,7 @@ G_MODULE_EXPORT void cb_sales1_tree_delete(GtkButton *button, gpointer data){
 }
 
 G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
+	ServerDates s;
 	int i;
 	//テスト用リスト削除コード
 	GtkListStore *store;
@@ -523,20 +330,14 @@ G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
 		}
 
 		if(g_soc>0){
-			sendLen = sprintf(sendBuf, "%s %d %d %s","CORRECT", selectNum, num, ENTER);
-			send(g_soc, sendBuf, sendLen, 0);
-			recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-			recordCount=record_division(recvBuf, records);
-			memset(response,0,BUFSIZE);
-			for(i=0;i<9;i++){
-				memset(param[i],0,BUFSIZE);
-			}
+			s.sendLen = sprintf(s.sendBuf, "%s %d %d %s","CORRECT", selectNum, num, ENTER);
+			serverSendFunc(&s);
 			/* レスポンスメッセージを解析 */
-			sscanf(records[0], "%s %s %s %s %s %s %s", 
-					response, param[0], param[1], param[2], param[3], param[4], param[5]);
-			if(strcmp(response, OK_STAT) != 0){
+			sscanf(s.records[0], "%s %s %s %s %s %s %s", 
+					s.response, s.param[0], s.param[1], s.param[2], s.param[3], s.param[4], s.param[5]);
+			if(strcmp(s.response, OK_STAT) != 0){
 				/* エラーメッセージを表示 */
-				showSalesErrorMsg(salesHData->noticeLabel, atoi(param[0]));
+				showSalesErrorMsg(salesHData->noticeLabel, atoi(s.param[0]));
 				return;
 			}
 			//gtk_list_store_append(salesHData->productModel, &iter);
@@ -545,34 +346,124 @@ G_MODULE_EXPORT void cb_sales1_tree_correct(GtkButton *button, gpointer data){
 		}
 	}
 }
-
-G_MODULE_EXPORT void cb_sales4_win_open(GtkButton *button, gpointer data){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
-	int i;
+/**
+ * コールバック関数
+ * cb_balance_exec
+ **/
 
 
+
+G_MODULE_EXPORT void cb_sales2_win_open(GtkButton *button, gpointer data){
+	if(g_sales2WindowFlag == 0){ 
+		gtk_widget_show_all(salesHData->breakDialog);
+		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+		if(g_sales5WindowFlag == 1)gtk_widget_set_sensitive( GTK_WIDGET(salesHData->resultWindow), FALSE );
+		g_sales2WindowFlag = 1;
+	}   
+}
+
+
+G_MODULE_EXPORT void cb_sales2_win_cancel(GtkButton *button, gpointer data){
+	gtk_widget_hide(salesHData->breakDialog);
+	if(g_sales5WindowFlag == 0)gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
+	if(g_sales5WindowFlag == 1)gtk_widget_set_sensitive( GTK_WIDGET(salesHData->resultWindow), TRUE );
+	g_sales2WindowFlag = 0;
+}
+
+
+G_MODULE_EXPORT void cb_sales3_win_open(GtkButton *button, gpointer data){
 	if(salesHData->pointLogin == 0){
-		sendLen = sprintf(sendBuf, "%s %d %s %d %s %s","SELV_SALE", g_storeId, "0", salesHData->selectedGender, salesHData->ageStr, ENTER);
-		send(g_soc, sendBuf, sendLen, 0);
-		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-		recordCount=record_division(recvBuf, records);
+		if(g_sales3WindowFlag == 0){ 
+			gtk_widget_show_all(salesHData->pointcardWindow);
+			gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+			g_sales3WindowFlag = 1;
+		}   
+	}
+}
+
+
+G_MODULE_EXPORT void cb_sales3_win_cancel(GtkButton *button, gpointer data){
+	gtk_widget_hide(salesHData->pointcardWindow);
+	gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
+	g_sales3WindowFlag = 0;
+}
+
+G_MODULE_EXPORT void cb_sales3_exec(GtkButton *button, gpointer data){
+	int i, productPrice;
+	const char *pointidStr;
+	char labelBuf[BUFSIZE];
+
+	ServerDates s;
+
+	pointidStr = gtk_entry_get_text(salesHData->pointidEntry);
+	/*通信用のソケットディスクリプタが空でないかチェック*/
+	if(g_soc>0){
+		s.sendLen = sprintf(s.sendBuf, "%s %d %s %s","SELV_SALE", g_storeId, pointidStr,ENTER);
+		
+		serverSendFunc(&s);
+		/* レスポンスメッセージを解析 */
+		sscanf(s.records[0], "%s %s %s", s.response, s.param[0], s.param[1]);
+
+		if(strcmp(s.response, OK_STAT) != 0){
+			/* エラーメッセージを表示 */
+			showSalesErrorMsg(salesHData->pointresultLabel, atoi(s.param[1]));
+			return;
+		}
+		showSalesOkMsg(salesHData->noticeLabel, 0);
+		salesHData->pointLogin = 1;
+		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->pointcardButton), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->ageComboBox), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->maleRadiobutton), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(salesHData->femaleRadiobutton), FALSE);
+
+		sprintf(labelBuf,"会員番号：%s", s.param[1]);
+		gtk_button_set_label(salesHData->pointcardButton, labelBuf);
+		gtk_widget_hide(salesHData->pointcardWindow);
+		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), TRUE );
+		g_sales3WindowFlag = 0;
+
 		for(i=1;i<=salesHData->nopointDataMax;i++){
 			if(salesHData->nopointData[i].buyNumber == 0)continue;
-			sendLen = sprintf(sendBuf, "%s %d %d %d %s", 
+			s.sendLen = sprintf(s.sendBuf, "%s %d %d %d %s", 
 					"SALE", 
 					salesHData->nopointData[i].productNumber, 
 					salesHData->nopointData[i].purchaseNumber,
 					salesHData->nopointData[i].buyNumber, 
 					ENTER);
-			printf("%s", sendBuf);
-			send(g_soc, sendBuf, sendLen, 0);
-			recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-			recordCount=record_division(recvBuf, records);
-			sscanf(records[0], "%s", response);
-			printf("%s\n", response);
-			if(strcmp(response, OK_STAT) != 0){
+			serverSendFunc(&s);
+			sscanf(s.records[0], "%s", s.response);
+			printf("%s\n", s.response);
+			if(strcmp(s.response, OK_STAT) != 0){
+				gtk_label_set_text(salesHData->totalmoneyLabel, "エラー");
+				gtk_widget_set_sensitive( GTK_WIDGET(salesHData->okButton5), FALSE );
+				gtk_widget_show_all(salesHData->resultWindow);
+				gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
+				gtk_widget_hide(salesHData->resultdangerDialog);
+			}	
+		}
+	}
+}
+
+
+G_MODULE_EXPORT void cb_sales4_win_open(GtkButton *button, gpointer data){
+	int i;
+	ServerDates s;
+
+	if(salesHData->pointLogin == 0){
+		s.sendLen = sprintf(s.sendBuf, "%s %d %s %d %s %s","SELV_SALE", g_storeId, "0", salesHData->selectedGender, salesHData->ageStr, ENTER);
+		serverSendFunc(&s);
+
+		for(i=1;i<=salesHData->nopointDataMax;i++){
+			if(salesHData->nopointData[i].buyNumber == 0)continue;
+			s.sendLen = sprintf(s.sendBuf, "%s %d %d %d %s", 
+					"SALE", 
+					salesHData->nopointData[i].productNumber, 
+					salesHData->nopointData[i].purchaseNumber,
+					salesHData->nopointData[i].buyNumber, 
+					ENTER);
+			serverSendFunc(&s);
+			sscanf(s.records[0], "%s", s.response);
+			if(strcmp(s.response, OK_STAT) != 0){
 				gtk_label_set_text(salesHData->totalmoneyLabel, "エラー");
 				gtk_widget_set_sensitive( GTK_WIDGET(salesHData->okButton5), FALSE );
 				gtk_widget_show_all(salesHData->resultWindow);
@@ -585,27 +476,21 @@ G_MODULE_EXPORT void cb_sales4_win_open(GtkButton *button, gpointer data){
 	}
 	/* 残高照会画面が表示されていない場合 */
 	if(g_sales4WindowFlag == 0){ 
-		sendLen = sprintf(sendBuf, "%s%s","RESULT",ENTER);
-		send(g_soc, sendBuf, sendLen, 0);
-		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-		recordCount=record_division(recvBuf, records);
-		memset(response,0,BUFSIZE);
-		for(i=0;i<9;i++){
-			memset(param[i],0,BUFSIZE);
-		}
+		s.sendLen = sprintf(s.sendBuf, "%s%s","RESULT",ENTER);
+		serverSendFunc(&s);
 		/* レスポンスメッセージを解析 */
-		sscanf(records[0], "%s %s %s %s", response, param[0], param[1], param[2]);
+		sscanf(s.records[0], "%s %s %s %s", s.response, s.param[0], s.param[1], s.param[2]);
 
-		salesHData->totalMoney = atoi(param[0]);
-		gtk_label_set_text(salesHData->totalmoneyLabel, param[0]);
+		salesHData->totalMoney = atoi(s.param[0]);
+		gtk_label_set_text(salesHData->totalmoneyLabel, s.param[0]);
 
-		if(atoi(param[0]) < atoi(param[1]))salesHData->useAblePoint = atoi(param[0]);
-		else salesHData->useAblePoint = atoi(param[1]);
+		if(atoi(s.param[0]) < atoi(s.param[1]))salesHData->useAblePoint = atoi(s.param[0]);
+		else salesHData->useAblePoint = atoi(s.param[1]);
 
-		salesHData->getPoint = atoi(param[2]);
+		salesHData->getPoint = atoi(s.param[2]);
 
-		sprintf(param[8], "%s%d%s", "利用ポイント(最大", salesHData->useAblePoint, ")");
-		gtk_label_set_text(salesHData->havepointLabel, param[8]);
+		sprintf(s.param[8], "%s%d%s", "利用ポイント(最大", salesHData->useAblePoint, ")");
+		gtk_label_set_text(salesHData->havepointLabel, s.param[8]);
 
 		gtk_widget_show_all(salesHData->resultWindow);
 		gtk_widget_set_sensitive( GTK_WIDGET(salesHData->salesWindow), FALSE );
@@ -672,11 +557,10 @@ G_MODULE_EXPORT void cb_sales5_win_cancel(GtkButton *button, gpointer data){
 }
 
 G_MODULE_EXPORT void cb_sales6_win_open(GtkButton *button, gpointer data){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[16][BUFSIZE], reciptText[BUFSIZE], resultTime[BUFSIZE];
+	ServerDates s;
 	int i;
 	const char *moneyStr, *usepointStr;
+	char reciptText[BUFSIZE], resultTime[BUFSIZE];
 
 	time_t now;
 	struct tm *ltm;
@@ -701,42 +585,36 @@ G_MODULE_EXPORT void cb_sales6_win_open(GtkButton *button, gpointer data){
 			return;
 		}
 
-		sendLen = sprintf(sendBuf, "%s %d %s %s%s", 
+		s.sendLen = sprintf(s.sendBuf, "%s %d %s %s%s", 
 				"END", salesHData->usePoint, salesHData->weatherStr, salesHData->KionStr, ENTER);
-		send(g_soc, sendBuf, sendLen, 0);
-		recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-		recordCount=record_division(recvBuf, records);
-		memset(response,0,BUFSIZE);
-		for(i=0;i<9;i++){
-			memset(param[i],0,BUFSIZE);
-		}
+		serverSendFunc(&s);
 		/* レスポンスメッセージを解析 */
-		sscanf(records[0], "%s %s %s", response, param[0], param[1]);
+		sscanf(s.records[0], "%s %s %s", s.response, s.param[0], s.param[1]);
 
 		time(&now);
 		ltm = localtime(&now);
 
 		sprintf(resultTime, "%d/%d/%d %d:%d", ltm->tm_year+1900, ltm->tm_mon+1, ltm->tm_mday, ltm->tm_hour, ltm->tm_min);
-		sprintf(param[3], "%s%d", "小計：￥", salesHData->totalMoney);
-		sprintf(param[5], "%s%d", "使用ポイント：", salesHData->usePoint);
-		sprintf(param[9], "%s%s", "合計：￥", param[0]);
-		sprintf(param[4], "%s%d", "お預り：￥", salesHData->useMoney);
-		sprintf(param[6], "%s%d", "お釣り：￥", salesHData->useMoney + salesHData->usePoint - salesHData->totalMoney);
-		sprintf(param[7], "%s%d", "発行ポイント：", salesHData->getPoint);
-		sprintf(param[8], "%s%s", "現在保有ポイント：", param[1]);
+		sprintf(s.param[3], "%s%d", "小計：￥", salesHData->totalMoney);
+		sprintf(s.param[5], "%s%d", "使用ポイント：", salesHData->usePoint);
+		sprintf(s.param[9], "%s%s", "合計：￥", s.param[0]);
+		sprintf(s.param[4], "%s%d", "お預り：￥", salesHData->useMoney);
+		sprintf(s.param[6], "%s%d", "お釣り：￥", salesHData->useMoney + salesHData->usePoint - salesHData->totalMoney);
+		sprintf(s.param[7], "%s%d", "発行ポイント：", salesHData->getPoint);
+		sprintf(s.param[8], "%s%s", "現在保有ポイント：", s.param[1]);
 
 		sprintf(reciptText, 
 				"%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", 
 				resultTime,
-				param[3],	//小計
-				param[5],	//使用ポイント
-				param[9],	//合計
+				s.param[3],	//小計
+				s.param[5],	//使用ポイント
+				s.param[9],	//合計
 				"------------------------",
-				param[4],	//お預り
-				param[6],	//お釣り
+				s.param[4],	//お預り
+				s.param[6],	//お釣り
 				"------------------------",
-				param[7],	//発行ポイント
-				param[8]	//現在保有ポイント
+				s.param[7],	//発行ポイント
+				s.param[8]	//現在保有ポイント
 			   );
 
 		setTextView(salesHData->reciptBox, reciptText);
@@ -772,21 +650,13 @@ G_MODULE_EXPORT void cb_sales7_yes(GtkButton *button, gpointer data){
 }   
 
 G_MODULE_EXPORT void cb_sales7_no(GtkButton *button, gpointer data){
-	char sendBuf[BUFSIZE], recvBuf[BUFSIZE_MAX];
-	int sendLen, recvLen, recordCount=0;
-	char *records[RECORD_MAX], response[BUFSIZE], param[9][BUFSIZE];
+	ServerDates s;
 	int i;
 
-	sendLen = sprintf(sendBuf, "%s%s","CANCEL",ENTER);
-	send(g_soc, sendBuf, sendLen, 0);
-	recvLen=recv_data(g_soc, recvBuf, BUFSIZE_MAX);
-	recordCount=record_division(recvBuf, records);
-	memset(response,0,BUFSIZE);
-	for(i=0;i<9;i++){
-		memset(param[i],0,BUFSIZE);
-	}
+	s.sendLen = sprintf(s.sendBuf, "%s%s","CANCEL",ENTER);
+	serverSendFunc(&s);
 	/* レスポンスメッセージを解析 */
-	sscanf(records[0], "%s", response);
+	sscanf(s.records[0], "%s", s.response);
 
 
 	/* 残高照会画面（ウィンドウ）を非表示 */
@@ -863,11 +733,61 @@ void serverSendFunc(ServerDates *s){
 	s->recordCount = 0;
 
 	send(g_soc, s->sendBuf, s->sendLen, 0);
-	printf("ooo\n");
 	s->recvLen = recv_data(g_soc, s->recvBuf, BUFSIZE_MAX);
 	s->recordCount = record_division(s->recvBuf, s->records);
 	memset(s->response, 0, BUFSIZE);
-	for(i=0; i<9; i++){
+	for(i=0; i<16; i++){
 		memset(s->param[i], 0, BUFSIZE);
 	}
+}
+
+int check_rimit_day(char *date){
+	time_t now;
+	struct tm *ltm;
+	char day[3], year[5], month[3];
+
+	time(&now);
+	ltm = localtime(&now);
+
+	strncpy(year, date, 4);
+	year[4]='\0';
+
+	strncpy(month, date+5, 2);
+	month[2]='\0';
+
+	strcpy(day, date+8);
+
+	if(ltm->tm_year+1900 > atoi(year))return 1;
+	else if(ltm->tm_year+1900 < atoi(year))return 0;
+	else{
+		if(ltm->tm_mon+1 > atoi(month))return 1;
+		else if(ltm->tm_mon+1 < atoi(month))return 0;
+		else{
+			if(ltm->tm_mday > atoi(day))return 1;
+			else if(ltm->tm_mday <= atoi(day))return 0;
+		}
+	}
+
+	return 0;
+}
+
+int check_stock(int productid){
+	int i;
+	ServerDates s;
+
+	s.sendLen = sprintf(s.sendBuf, "%s %d %s","STOCK_DISP",g_storeId,ENTER);
+	
+	serverSendFunc(&s);
+	
+	/* レスポンスメッセージを解析 */
+	sscanf(s.records[0], "%s %s", s.response, s.param[0]);
+
+	for(i=1;i<s.recordCount;i++){
+		sscanf(s.records[i], "%s %s %s", s.param[0], s.param[1], s.param[2]);
+		if(atoi(s.param[0]) == productid){
+			if(atoi(s.param[2]) > 0)return 1;
+			else return 0;
+		}
+	}
+	return 0;
 }
